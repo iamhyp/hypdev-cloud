@@ -1,8 +1,75 @@
 ---
+import fs from 'node:fs';
+import path from 'node:path';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import siteConfig from '../config/site';
 
 const subtitleItems = ['Infrastructure as Code', 'Kubernetes', 'Cloud Security', 'Applied AI'];
+
+const pillars = [
+	{
+		color: 'red',
+		name: 'Perimeter',
+		description:
+			'WAF, network firewall, zero trust access. Threats are rejected before they reach compute.',
+		note: 'blast radius first',
+	},
+	{
+		color: 'amber',
+		name: 'Identity',
+		description:
+			'Least-privilege IAM, IRSA, RBAC. Overly broad roles are the most common breach vector.',
+		note: 'least privilege',
+	},
+	{
+		color: 'cyan',
+		name: 'Data protection',
+		description: 'KMS, Secrets Manager, Vault. Key management is where real security judgment lives.',
+		note: 'encryption at rest',
+	},
+	{
+		color: 'green',
+		name: 'Detection',
+		description:
+			'GuardDuty, Falco, CloudTrail, Security Hub. Prevention always fails. Detection speed is the metric.',
+		note: 'MITRE ATT&CK mapped',
+	},
+];
+
+function loadIcon(name: string) {
+	return fs.readFileSync(path.join(process.cwd(), 'public/icons', `${name}.svg`), 'utf-8');
+}
+
+const techColumns = [
+	{
+		heading: 'CLOUD & INFRA',
+		tools: [
+			{ name: 'AWS', icon: loadIcon('aws') },
+			{ name: 'Azure', icon: loadIcon('azure') },
+			{ name: 'Terraform', icon: loadIcon('terraform'), color: '#7b42bc' },
+			{ name: 'Kubernetes', icon: loadIcon('kubernetes'), color: '#326ce5' },
+			{ name: 'Docker', icon: loadIcon('docker'), color: '#2496ed' },
+		],
+	},
+	{
+		heading: 'CI/CD & AUTOMATION',
+		tools: [
+			{ name: 'Jenkins', icon: loadIcon('jenkins'), color: '#d24939' },
+			{ name: 'GitHub Actions', icon: loadIcon('github'), color: 'var(--text)' },
+			{ name: 'ArgoCD', icon: loadIcon('argocd'), color: '#ef7b4d' },
+			{ name: 'Ansible', icon: loadIcon('ansible'), color: '#ee0000' },
+		],
+	},
+	{
+		heading: 'LANGUAGES & DEV',
+		tools: [
+			{ name: 'Python', icon: loadIcon('python'), color: '#3776ab' },
+			{ name: 'C++', icon: loadIcon('cplusplus'), color: '#00599c' },
+			{ name: 'Bash', icon: loadIcon('bash'), color: '#4eaa25' },
+			{ name: 'PowerShell', icon: loadIcon('powershell'), color: '#5391fe' },
+		],
+	},
+];
 ---
 
 <BaseLayout title={siteConfig.site.title} description={siteConfig.site.description}>
@@ -82,6 +149,48 @@ const subtitleItems = ['Infrastructure as Code', 'Kubernetes', 'Cloud Security',
 					><span class="terminal-cursor" id="terminal-cursor"></span>
 				</p>
 			</div>
+		</div>
+	</section>
+
+	<section class="pillars-section">
+		<div class="pillars-grid">
+			{
+				pillars.map((pillar) => (
+					<div class="pillar">
+						<div class="pillar-heading">
+							<span class={`pillar-dot pillar-dot-${pillar.color}`} />
+							<h3 class="pillar-name">{pillar.name}</h3>
+						</div>
+						<p class="pillar-description">{pillar.description}</p>
+						<span class="pillar-note">{pillar.note}</span>
+					</div>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="tech-section">
+		<div class="tech-columns">
+			{
+				techColumns.map((column) => (
+					<div class="tech-column">
+						<h3 class="tech-column-heading">{column.heading}</h3>
+						<div class="tech-tiles">
+							{column.tools.map((tool) => (
+								<div class="tech-tile">
+									<span
+										class="tile-icon"
+										style={tool.color ? `color: ${tool.color};` : undefined}
+										aria-hidden="true"
+										set:html={tool.icon}
+									/>
+									<span class="tile-name">{tool.name}</span>
+								</div>
+							))}
+						</div>
+					</div>
+				))
+			}
 		</div>
 	</section>
 
@@ -333,6 +442,177 @@ const subtitleItems = ['Infrastructure as Code', 'Kubernetes', 'Cloud Security',
 		.terminal-line,
 		.terminal-output {
 			font-size: 12px;
+		}
+	}
+
+	/* Security pillars */
+
+	.pillars-section {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 24px 128px;
+	}
+
+	.pillars-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	.pillar {
+		padding: 0 36px;
+	}
+
+	.pillar:first-child {
+		padding-left: 0;
+	}
+
+	.pillar:not(:first-child) {
+		border-left: 1px solid var(--border-faint);
+	}
+
+	.pillar-heading {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		margin: 0 0 18px;
+	}
+
+	.pillar-dot {
+		display: inline-block;
+		flex-shrink: 0;
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+	}
+
+	.pillar-dot-red {
+		background: var(--red);
+	}
+
+	.pillar-dot-amber {
+		background: var(--amber);
+	}
+
+	.pillar-dot-cyan {
+		background: var(--cyan);
+	}
+
+	.pillar-dot-green {
+		background: var(--green);
+	}
+
+	.pillar-name {
+		margin: 0;
+		font-size: 24px;
+		font-weight: 700;
+		letter-spacing: -0.015em;
+		color: var(--text);
+	}
+
+	.pillar-description {
+		margin: 0 0 20px;
+		font-size: 14.5px;
+		line-height: 1.75;
+		color: var(--muted);
+	}
+
+	.pillar-note {
+		font-family: var(--font-mono);
+		font-size: 11px;
+		letter-spacing: 0.02em;
+		color: var(--faint);
+	}
+
+	@media (max-width: 860px) {
+		.pillars-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.pillar {
+			padding: 32px 0;
+		}
+
+		.pillar:first-child {
+			padding-top: 0;
+		}
+
+		.pillar:last-child {
+			padding-bottom: 0;
+		}
+
+		.pillar:not(:first-child) {
+			border-left: none;
+			border-top: 1px solid var(--border-faint);
+		}
+	}
+
+	/* Tech stack */
+
+	.tech-section {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 24px 128px;
+	}
+
+	.tech-columns {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 24px;
+	}
+
+	.tech-column {
+		border: 1px solid var(--border-subtle);
+		border-radius: 8px;
+		padding: 32px;
+	}
+
+	.tech-column-heading {
+		margin: 0 0 24px;
+		font-family: var(--font-mono);
+		font-size: 15px;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--cyan);
+	}
+
+	.tech-tiles {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 28px 16px;
+	}
+
+	.tech-tile {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 12px;
+		padding: 4px 0;
+	}
+
+	.tile-icon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 28px;
+		opacity: 0.92;
+	}
+
+	.tile-icon :global(svg) {
+		width: 28px;
+		height: 28px;
+		display: block;
+	}
+
+	.tile-name {
+		font-size: 13px;
+		color: var(--muted);
+		text-align: center;
+	}
+
+	@media (max-width: 860px) {
+		.tech-columns {
+			grid-template-columns: 1fr;
 		}
 	}
 
