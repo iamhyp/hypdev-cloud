@@ -1,0 +1,392 @@
+---
+import siteConfig from '../config/site';
+
+interface Props {
+	title: string;
+	description: string;
+}
+
+const { title, description } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, `https://${siteConfig.site.domain}`);
+const currentPath = Astro.url.pathname;
+const year = new Date().getFullYear();
+
+const navLinks = [
+	{ href: '/', label: 'Home' },
+	{ href: '/projects/', label: 'Projects' },
+	{ href: '/about/', label: 'About' },
+	{ href: '/certifications/', label: 'Certifications' },
+	{ href: '/blog/', label: 'Blog' },
+];
+
+function isActive(href: string) {
+	if (href === '/') return currentPath === '/';
+	return currentPath.startsWith(href);
+}
+
+const isContactPage = currentPath.startsWith('/contact');
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalURL} />
+
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+		/>
+
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:site_name" content={siteConfig.site.name} />
+
+		<meta name="twitter:card" content="summary" />
+	</head>
+	<body>
+		<nav class="site-nav">
+			<div class="nav-inner">
+				<a href="/" class="logo" aria-label={`${siteConfig.site.domain}, home`}>
+					<span class="logo-accent">{siteConfig.site.domain.slice(0, 3)}</span
+					><span class="logo-faint">{siteConfig.site.domain.slice(3)}</span>
+				</a>
+
+				<button
+					type="button"
+					class="nav-toggle"
+					id="nav-toggle"
+					aria-expanded="false"
+					aria-controls="nav-menu"
+					aria-label="Menu"
+				>
+					<span class="nav-toggle-bar"></span>
+					<span class="nav-toggle-bar"></span>
+					<span class="nav-toggle-bar"></span>
+				</button>
+
+				<div class="nav-menu" id="nav-menu" hidden>
+					{
+						navLinks.map((link) => (
+							<a href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
+								{link.label}
+							</a>
+						))
+					}
+				</div>
+
+				<a
+					href="/contact/"
+					class="btn-contact"
+					aria-current={isContactPage ? 'page' : undefined}
+				>
+					Contact
+				</a>
+			</div>
+		</nav>
+
+		<main>
+			<slot />
+		</main>
+
+		<footer class="site-footer">
+			<p class="footer-left">{siteConfig.site.domain}, {year}</p>
+			<div class="footer-links">
+				<a href="/cv/">CV</a>
+				<a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+				<a href={siteConfig.social.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+				<a href={`mailto:${siteConfig.social.email}`}>Email</a>
+			</div>
+		</footer>
+
+		<script>
+			const toggle = document.getElementById('nav-toggle') as HTMLButtonElement;
+			const menu = document.getElementById('nav-menu') as HTMLElement;
+
+			function closeMenu() {
+				menu.hidden = true;
+				toggle.setAttribute('aria-expanded', 'false');
+			}
+
+			function openMenu() {
+				menu.hidden = false;
+				toggle.setAttribute('aria-expanded', 'true');
+			}
+
+			toggle.addEventListener('click', () => {
+				const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+				if (isOpen) {
+					closeMenu();
+				} else {
+					openMenu();
+				}
+			});
+
+			document.addEventListener('keydown', (event) => {
+				if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+					closeMenu();
+					toggle.focus();
+				}
+			});
+
+			document.addEventListener('click', (event) => {
+				const target = event.target as Node;
+				if (!menu.hidden && !menu.contains(target) && target !== toggle) {
+					closeMenu();
+				}
+			});
+
+			const desktopQuery = window.matchMedia('(min-width: 860px)');
+			desktopQuery.addEventListener('change', (event) => {
+				if (event.matches) closeMenu();
+			});
+		</script>
+
+		<style is:global>
+			:root {
+				--bg: #08090e;
+				--bg-secondary: #0c0d14;
+				--card: #101119;
+				--card-hover: #13141f;
+				--cyan: #00bcd4;
+				--cyan-dim: rgba(0, 188, 212, 0.08);
+				--cyan-border: rgba(0, 188, 212, 0.14);
+				--text: #e8eaf0;
+				--muted: #8892aa;
+				--faint: #464f6a;
+				--border-faint: rgba(255, 255, 255, 0.055);
+				--border-subtle: rgba(255, 255, 255, 0.09);
+				--green: #1db86a;
+				--amber: #e8a020;
+				--red: #e05252;
+
+				--font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+				--font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+					monospace;
+			}
+
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+			}
+
+			html,
+			body {
+				height: 100%;
+			}
+
+			body {
+				display: flex;
+				flex-direction: column;
+				min-height: 100vh;
+				margin: 0;
+				background: var(--bg);
+				color: var(--text);
+				font-family: var(--font-sans);
+				font-weight: 400;
+				-webkit-font-smoothing: antialiased;
+			}
+
+			main {
+				flex: 1;
+			}
+
+			a {
+				color: inherit;
+			}
+
+			:focus-visible {
+				outline: 2px solid var(--cyan);
+				outline-offset: 2px;
+			}
+
+			/* Site navigation */
+
+			.site-nav {
+				position: sticky;
+				top: 0;
+				z-index: 50;
+				background: var(--bg-secondary);
+				border-bottom: 1px solid var(--border-faint);
+			}
+
+			.nav-inner {
+				position: relative;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 24px;
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 16px 24px;
+			}
+
+			.logo {
+				font-family: var(--font-mono);
+				font-weight: 500;
+				font-size: 1.05rem;
+				text-decoration: none;
+				white-space: nowrap;
+			}
+
+			.logo-accent {
+				color: var(--cyan);
+			}
+
+			.logo-faint {
+				color: var(--faint);
+			}
+
+			.nav-toggle {
+				display: none;
+				flex-direction: column;
+				justify-content: center;
+				gap: 5px;
+				width: 36px;
+				height: 36px;
+				padding: 0;
+				background: none;
+				border: 1px solid var(--border-subtle);
+				border-radius: 6px;
+				cursor: pointer;
+			}
+
+			.nav-toggle-bar {
+				display: block;
+				width: 16px;
+				height: 2px;
+				margin: 0 auto;
+				background: var(--text);
+			}
+
+			.nav-menu {
+				display: none;
+				flex-direction: column;
+				gap: 2px;
+			}
+
+			.nav-menu:not([hidden]) {
+				display: flex;
+			}
+
+			.nav-menu a {
+				padding: 10px 12px;
+				border-radius: 6px;
+				text-decoration: none;
+				font-size: 0.95rem;
+				color: var(--text);
+			}
+
+			.nav-menu a[aria-current='page'] {
+				color: var(--cyan);
+				background: var(--cyan-dim);
+			}
+
+			.btn-contact {
+				flex-shrink: 0;
+				padding: 8px 18px;
+				background: var(--cyan);
+				color: var(--bg);
+				font-weight: 500;
+				font-size: 0.95rem;
+				text-decoration: none;
+				border-radius: 6px;
+			}
+
+			.btn-contact[aria-current='page'] {
+				opacity: 0.6;
+			}
+
+			@media (max-width: 859px) {
+				.nav-toggle {
+					display: inline-flex;
+				}
+
+				.nav-menu {
+					position: absolute;
+					top: 100%;
+					left: 0;
+					right: 0;
+					padding: 8px;
+					background: var(--card);
+					border-bottom: 1px solid var(--border-faint);
+				}
+			}
+
+			@media (min-width: 860px) {
+				.nav-toggle {
+					display: none;
+				}
+
+				.nav-menu[hidden] {
+					display: flex;
+				}
+
+				.nav-menu {
+					flex-direction: row;
+					gap: 4px;
+				}
+			}
+
+			/* Footer */
+
+			.site-footer {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: center;
+				justify-content: space-between;
+				gap: 12px;
+				max-width: 1200px;
+				margin: 0 auto;
+				width: 100%;
+				padding: 24px;
+				border-top: 1px solid var(--border-faint);
+			}
+
+			.footer-left {
+				margin: 0;
+				font-family: var(--font-mono);
+				font-size: 0.85rem;
+				color: var(--muted);
+			}
+
+			.footer-links {
+				display: flex;
+				gap: 20px;
+			}
+
+			.footer-links a {
+				font-size: 0.9rem;
+				color: var(--muted);
+				text-decoration: none;
+			}
+
+			.footer-links a:hover {
+				color: var(--text);
+			}
+
+			@media (prefers-reduced-motion: reduce) {
+				*,
+				*::before,
+				*::after {
+					animation-duration: 0.01ms !important;
+					animation-iteration-count: 1 !important;
+					transition-duration: 0.01ms !important;
+					scroll-behavior: auto !important;
+				}
+			}
+		</style>
+	</body>
+</html>
