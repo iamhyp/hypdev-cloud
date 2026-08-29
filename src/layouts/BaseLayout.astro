@@ -297,7 +297,7 @@ const isContactPage = currentPath.startsWith('/contact');
 				gap: 24px;
 				max-width: 1200px;
 				margin: 0 auto;
-				padding: 16px 24px;
+				padding: 20px 24px;
 			}
 
 			.logo {
@@ -443,6 +443,19 @@ const isContactPage = currentPath.startsWith('/contact');
 				.nav-menu {
 					flex-direction: row;
 					gap: 4px;
+				}
+
+				/* A bordered square icon button reads as dashboard chrome at
+				   rest. On desktop, where hover is available, the border only
+				   appears on interaction instead of sitting there permanently. */
+				.theme-toggle {
+					border-color: transparent;
+					transition: border-color 0.15s ease;
+				}
+
+				.theme-toggle:hover,
+				.theme-toggle:focus-visible {
+					border-color: var(--nav-toggle-border);
 				}
 			}
 
