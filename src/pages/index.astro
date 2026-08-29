@@ -40,6 +40,12 @@ function loadIcon(name: string) {
 	return fs.readFileSync(path.join(process.cwd(), 'public/icons', `${name}.svg`), 'utf-8');
 }
 
+const stats = [
+	{ value: '5', suffix: '+', label: 'Certifications' },
+	{ value: '3', suffix: '+', label: 'Peer-reviewed publications' },
+	{ value: '2', suffix: '', label: "Funded master's degrees" },
+];
+
 const techColumns = [
 	{
 		heading: 'CLOUD & INFRA',
@@ -194,6 +200,21 @@ const techColumns = [
 		</div>
 	</section>
 
+	<section class="stats-section">
+		<div class="stats-row">
+			{
+				stats.map((stat) => (
+					<div class="stat">
+						<p class="stat-value">
+							{stat.value}
+							<span class="stat-plus">{stat.suffix}</span>
+						</p>
+						<p class="stat-label">{stat.label}</p>
+					</div>
+				))
+			}
+		</div>
+	</section>
 </BaseLayout>
 
 <script is:inline src="/scripts/terminal.js"></script>
@@ -616,4 +637,68 @@ const techColumns = [
 		}
 	}
 
+	/* Stats row */
+
+	.stats-section {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 24px 96px;
+	}
+
+	.stats-row {
+		display: flex;
+	}
+
+	.stat {
+		flex: 1;
+		padding: 0 32px;
+	}
+
+	.stat:first-child {
+		padding-left: 0;
+	}
+
+	.stat:not(:first-child) {
+		border-left: 1px solid var(--border-faint);
+	}
+
+	.stat-value {
+		margin: 0 0 8px;
+		font-family: var(--font-mono);
+		font-size: 26px;
+		font-weight: 600;
+		color: var(--text);
+	}
+
+	.stat-plus {
+		font-size: 20px;
+		color: var(--cyan);
+	}
+
+	.stat-label {
+		margin: 0;
+		font-size: 11px;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--faint);
+	}
+
+	@media (max-width: 640px) {
+		.stats-row {
+			flex-direction: column;
+			gap: 24px;
+		}
+
+		.stat {
+			padding: 0 0 0 20px;
+		}
+
+		.stat:first-child {
+			padding-left: 20px;
+		}
+
+		.stat:not(:first-child) {
+			border-left: 1px solid var(--border-faint);
+		}
+	}
 </style>
