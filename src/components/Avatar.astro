@@ -1,0 +1,20 @@
+---
+// Circular profile photo, true color. One image works for both themes
+// since natural color doesn't wash out against either background — the
+// cyan ring alone carries the accent. Swap the source photo or its crop
+// by regenerating public/images/avatar.png; everything else about the
+// avatar (frame, border, sizing) lives here in one place.
+---
+
+<img class="avatar" src="/images/avatar.png" alt="Lawal Alabe" width="64" height="64" />
+
+<style>
+	.avatar {
+		display: inline-block;
+		width: 64px;
+		height: 64px;
+		border-radius: 50%;
+		border: 2px solid #00bcd4;
+		object-fit: cover;
+	}
+</style>
