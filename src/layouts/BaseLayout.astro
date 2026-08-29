@@ -155,10 +155,26 @@ const isContactPage = currentPath.startsWith('/contact');
 
 		<style is:global>
 			:root {
+				--green: #1db86a;
+				--amber: #e8a020;
+				--red: #e05252;
+
+				--font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+				--font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+					monospace;
+			}
+
+			/* Dark theme (default). Also applied at bare :root so the page
+			   is never unstyled before the anti-flash script sets the
+			   attribute. */
+			:root,
+			:root[data-theme='dark'] {
 				--bg: #08090e;
 				--bg-secondary: #0c0d14;
 				--card: #101119;
 				--card-hover: #13141f;
+				--nav-bg: #0c0d14;
+				--nav-shadow: none;
 				--cyan: #00bcd4;
 				--cyan-dim: rgba(0, 188, 212, 0.08);
 				--cyan-border: rgba(0, 188, 212, 0.14);
@@ -167,13 +183,51 @@ const isContactPage = currentPath.startsWith('/contact');
 				--faint: #464f6a;
 				--border-faint: rgba(255, 255, 255, 0.055);
 				--border-subtle: rgba(255, 255, 255, 0.09);
-				--green: #1db86a;
-				--amber: #e8a020;
-				--red: #e05252;
+				--nav-border: rgba(255, 255, 255, 0.055);
 
-				--font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-				--font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-					monospace;
+				--nav-link: #b6bfd0;
+				--nav-link-weight: 500;
+				--nav-link-active: #e8eaf0;
+				--nav-active-underline: #00bcd4;
+				--nav-contact-bg: #00bcd4;
+				--nav-contact-text: #000000;
+				--nav-contact-weight: 500;
+				--nav-toggle-color: #b6bfd0;
+				--nav-toggle-border: rgba(255, 255, 255, 0.09);
+				--logo-hyp: #00bcd4;
+				--logo-dev: #e8eaf0;
+				--logo-cloud: #464f6a;
+			}
+
+			:root[data-theme='light'] {
+				--bg: #fdfcfa;
+				--bg-secondary: #f4f1ec;
+				--card: #ffffff;
+				--card-hover: #f8f6f2;
+				--nav-bg: #fffefc;
+				--nav-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+				--cyan: #00798c;
+				--cyan-dim: rgba(0, 121, 140, 0.09);
+				--cyan-border: rgba(0, 121, 140, 0.25);
+				--text: #12141a;
+				--muted: #454c5c;
+				--faint: #6b7383;
+				--border-faint: rgba(0, 0, 0, 0.09);
+				--border-subtle: rgba(0, 0, 0, 0.14);
+				--nav-border: rgba(0, 0, 0, 0.13);
+
+				--nav-link: #000000;
+				--nav-link-weight: 600;
+				--nav-link-active: #000000;
+				--nav-active-underline: #00606f;
+				--nav-contact-bg: #00606f;
+				--nav-contact-text: #ffffff;
+				--nav-contact-weight: 600;
+				--nav-toggle-color: #000000;
+				--nav-toggle-border: rgba(0, 0, 0, 0.14);
+				--logo-hyp: #00606f;
+				--logo-dev: #12141a;
+				--logo-cloud: #6b7383;
 			}
 
 			*,
