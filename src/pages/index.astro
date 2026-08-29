@@ -1,17 +1,339 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteConfig from '../config/site';
 
+const subtitleItems = ['Infrastructure as Code', 'Kubernetes', 'Cloud Security', 'Applied AI'];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title={siteConfig.site.title} description={siteConfig.site.description}>
+	<section class="hero">
+		<p class="hero-location">Australia · Remote</p>
+
+		<h1 class="hero-name"
+			><span class="hero-name-text">Lawal</span><span class="hero-name-dot">.</span></h1
+		>
+
+		<p class="hero-role">{siteConfig.author.role}</p>
+
+		<p class="hero-subtitle">
+			{
+				subtitleItems.map((item, i) => (
+					<span class="hero-subtitle-unit">
+						{i > 0 && <span class="hero-subtitle-pipe">|</span>}
+						<span class="hero-subtitle-item">{item}</span>
+					</span>
+				))
+			}
+		</p>
+
+		<p class="hero-paragraph">
+			I build secure platforms and harden cloud-native infrastructure at scale. My work sits
+			across infrastructure as code, Kubernetes security, and applied AI workload protection. I
+			bring depth from AWS, research from two funded master's degrees, and hands-on work from
+			production environments.
+		</p>
+
+		<div class="hero-actions">
+			<a href="/projects/" class="btn-primary">View projects</a>
+			<a href="/about/" class="btn-outline">About me</a>
+			<a href={siteConfig.social.github} target="_blank" rel="noopener noreferrer" class="hero-link"
+				>GitHub</a
+			>
+			<a
+				href={siteConfig.social.linkedin}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="hero-link">LinkedIn</a
+			>
+		</div>
+	</section>
+
+	<section class="terminal-section">
+		<div class="terminal">
+			<div class="terminal-titlebar">
+				<span class="terminal-dot terminal-dot-red"></span>
+				<span class="terminal-dot terminal-dot-amber"></span>
+				<span class="terminal-dot terminal-dot-green"></span>
+				<span class="terminal-title">lawal@hypdev zsh</span>
+			</div>
+			<div class="terminal-body">
+				<p class="terminal-line">
+					<span class="terminal-prompt">$</span>
+					<span class="terminal-cmd">terraform init && terraform plan -out=tfplan</span>
+				</p>
+				<p class="terminal-output">Plan: 4 to add, 1 to change, 0 to destroy.</p>
+
+				<p class="terminal-line">
+					<span class="terminal-prompt">$</span>
+					<span class="terminal-cmd">cosign verify --key cosign.pub registry/app:prod</span>
+				</p>
+				<p class="terminal-output">Verification for registry/app:prod --</p>
+				<p class="terminal-output">  claims validated, signature verified against public key</p>
+
+				<p class="terminal-line">
+					<span class="terminal-prompt">$</span>
+					<span class="terminal-cmd">trivy image --severity CRITICAL app:v3</span>
+				</p>
+				<p class="terminal-output">Total: 0 (CRITICAL: 0)</p>
+
+				<p class="terminal-line">
+					<span class="terminal-prompt">$</span>
+					<span class="terminal-cmd" id="terminal-typed"></span
+					><span class="terminal-cursor" id="terminal-cursor"></span>
+				</p>
+			</div>
+		</div>
+	</section>
+
+</BaseLayout>
+
+<script is:inline src="/scripts/terminal.js"></script>
+
+<style>
+	.hero {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 128px 24px 96px;
+	}
+
+	.hero-location {
+		margin: 0 0 24px;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		font-weight: 500;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--faint);
+	}
+
+	.hero-name {
+		margin: 0;
+		font-family: var(--font-mono);
+		font-weight: 700;
+		font-size: clamp(4rem, 8vw, 6rem);
+		line-height: 1;
+		letter-spacing: -0.03em;
+	}
+
+	.hero-name-text {
+		color: var(--text);
+	}
+
+	.hero-name-dot {
+		color: var(--cyan);
+	}
+
+	.hero-role {
+		margin: 28px 0 0;
+		font-family: var(--font-mono);
+		font-size: 24px;
+		font-weight: 500;
+		letter-spacing: -0.01em;
+		color: var(--muted);
+	}
+
+	.hero-subtitle {
+		margin: 18px 0 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		font-size: 13px;
+	}
+
+	.hero-subtitle-unit {
+		display: inline-flex;
+		gap: 10px;
+	}
+
+	.hero-subtitle-item {
+		color: var(--muted);
+	}
+
+	.hero-subtitle-pipe {
+		color: var(--faint);
+	}
+
+	.hero-paragraph {
+		margin: 32px 0 0;
+		max-width: 540px;
+		font-size: 13px;
+		line-height: 1.85;
+		color: var(--muted);
+	}
+
+	.hero-actions {
+		margin-top: 40px;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 20px;
+	}
+
+	.btn-primary {
+		padding: 14px 28px;
+		background: var(--cyan);
+		color: var(--bg);
+		font-size: 13px;
+		font-weight: 600;
+		text-decoration: none;
+		border-radius: 999px;
+	}
+
+	.btn-outline {
+		padding: 14px 28px;
+		border: 1px solid var(--border-subtle);
+		color: var(--text);
+		font-size: 13px;
+		font-weight: 600;
+		text-decoration: none;
+		border-radius: 999px;
+	}
+
+	.hero-link {
+		font-size: 13px;
+		color: var(--muted);
+		text-decoration: none;
+	}
+
+	.hero-link:hover {
+		color: var(--text);
+	}
+
+	@media (max-width: 480px) {
+		.hero {
+			padding: 64px 20px 48px;
+		}
+	}
+
+	/*
+	 * Terminal colours are declared as local custom properties on .terminal
+	 * itself, not read from the shared :root tokens. A terminal window is
+	 * dark by convention regardless of the page around it, so these values
+	 * must never change when [data-theme='light'] is set on <html>.
+	 */
+	.terminal-section {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 24px 128px;
+	}
+
+	.terminal {
+		--term-bg: #0c0d14;
+		--term-titlebar: #13141f;
+		--term-border: rgba(255, 255, 255, 0.09);
+		--term-text: #e8eaf0;
+		--term-muted: #8892aa;
+		--term-cyan: #00bcd4;
+		--term-green: #1db86a;
+		--term-red: #e05252;
+		--term-amber: #e8a020;
+
+		max-width: 680px;
+		border: 1px solid var(--term-border);
+		border-radius: 8px;
+		background: var(--term-bg);
+		overflow: hidden;
+		font-family: var(--font-mono);
+	}
+
+	.terminal-titlebar {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 12px 16px;
+		background: var(--term-titlebar);
+		border-bottom: 1px solid var(--term-border);
+	}
+
+	.terminal-dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+	}
+
+	.terminal-dot-red {
+		background: var(--term-red);
+	}
+
+	.terminal-dot-amber {
+		background: var(--term-amber);
+	}
+
+	.terminal-dot-green {
+		background: var(--term-green);
+	}
+
+	.terminal-title {
+		margin: 0 0 0 8px;
+		font-size: 12px;
+		color: var(--term-muted);
+	}
+
+	.terminal-body {
+		padding: 20px 20px 24px;
+	}
+
+	.terminal-line {
+		margin: 0;
+		font-size: 13px;
+		line-height: 1.7;
+	}
+
+	.terminal-output {
+		margin: 0 0 12px;
+		font-size: 13px;
+		line-height: 1.7;
+		color: var(--term-green);
+		white-space: pre-wrap;
+	}
+
+	.terminal-prompt {
+		color: var(--term-cyan);
+		margin-right: 8px;
+	}
+
+	.terminal-cmd {
+		color: var(--term-muted);
+	}
+
+	.terminal-cursor {
+		display: inline-block;
+		width: 7px;
+		height: 14px;
+		margin-left: 2px;
+		background: var(--term-cyan);
+		vertical-align: text-bottom;
+		animation: terminal-blink 1s step-end infinite;
+	}
+
+	.terminal-cursor[hidden] {
+		display: none;
+	}
+
+	@keyframes terminal-blink {
+		0%,
+		50% {
+			opacity: 1;
+		}
+		50.01%,
+		100% {
+			opacity: 0;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.terminal-section {
+			padding: 0 20px 64px;
+		}
+
+		.terminal-body {
+			padding: 16px;
+		}
+
+		.terminal-line,
+		.terminal-output {
+			font-size: 12px;
+		}
+	}
+
+</style>
