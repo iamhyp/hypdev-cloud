@@ -72,8 +72,9 @@ const isContactPage = currentPath.startsWith('/contact');
 		<nav class="site-nav">
 			<div class="nav-inner">
 				<a href="/" class="logo" aria-label={`${siteConfig.site.domain}, home`}>
-					<span class="logo-accent">{siteConfig.site.domain.slice(0, 3)}</span
-					><span class="logo-faint">{siteConfig.site.domain.slice(3)}</span>
+					<span class="logo-hyp">{siteConfig.site.domain.slice(0, 3)}</span
+					><span class="logo-dev">{siteConfig.site.domain.slice(3, 6)}</span
+					><span class="logo-cloud">{siteConfig.site.domain.slice(6)}</span>
 				</a>
 
 				<button
@@ -99,6 +100,45 @@ const isContactPage = currentPath.startsWith('/contact');
 					}
 				</div>
 
+				<button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to light theme">
+					<svg
+						class="icon-sun"
+						viewBox="0 0 24 24"
+						width="16"
+						height="16"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<circle cx="12" cy="12" r="5"></circle>
+						<line x1="12" y1="1" x2="12" y2="3"></line>
+						<line x1="12" y1="21" x2="12" y2="23"></line>
+						<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+						<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+						<line x1="1" y1="12" x2="3" y2="12"></line>
+						<line x1="21" y1="12" x2="23" y2="12"></line>
+						<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+						<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+					</svg>
+					<svg
+						class="icon-moon"
+						viewBox="0 0 24 24"
+						width="16"
+						height="16"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						aria-hidden="true"
+					>
+						<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+					</svg>
+				</button>
+
 				<a
 					href="/contact/"
 					class="btn-contact"
@@ -123,48 +163,7 @@ const isContactPage = currentPath.startsWith('/contact');
 			</div>
 		</footer>
 
-		<script>
-			const toggle = document.getElementById('nav-toggle') as HTMLButtonElement;
-			const menu = document.getElementById('nav-menu') as HTMLElement;
-
-			function closeMenu() {
-				menu.hidden = true;
-				toggle.setAttribute('aria-expanded', 'false');
-			}
-
-			function openMenu() {
-				menu.hidden = false;
-				toggle.setAttribute('aria-expanded', 'true');
-			}
-
-			toggle.addEventListener('click', () => {
-				const isOpen = toggle.getAttribute('aria-expanded') === 'true';
-				if (isOpen) {
-					closeMenu();
-				} else {
-					openMenu();
-				}
-			});
-
-			document.addEventListener('keydown', (event) => {
-				if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
-					closeMenu();
-					toggle.focus();
-				}
-			});
-
-			document.addEventListener('click', (event) => {
-				const target = event.target as Node;
-				if (!menu.hidden && !menu.contains(target) && target !== toggle) {
-					closeMenu();
-				}
-			});
-
-			const desktopQuery = window.matchMedia('(min-width: 860px)');
-			desktopQuery.addEventListener('change', (event) => {
-				if (event.matches) closeMenu();
-			});
-		</script>
+		<script is:inline src="/scripts/nav.js"></script>
 
 		<style is:global>
 			:root {
@@ -285,8 +284,9 @@ const isContactPage = currentPath.startsWith('/contact');
 				position: sticky;
 				top: 0;
 				z-index: 50;
-				background: var(--bg-secondary);
-				border-bottom: 1px solid var(--border-faint);
+				background: var(--nav-bg);
+				border-bottom: 1px solid var(--nav-border);
+				box-shadow: var(--nav-shadow);
 			}
 
 			.nav-inner {
@@ -308,12 +308,16 @@ const isContactPage = currentPath.startsWith('/contact');
 				white-space: nowrap;
 			}
 
-			.logo-accent {
-				color: var(--cyan);
+			.logo-hyp {
+				color: var(--logo-hyp);
 			}
 
-			.logo-faint {
-				color: var(--faint);
+			.logo-dev {
+				color: var(--logo-dev);
+			}
+
+			.logo-cloud {
+				color: var(--logo-cloud);
 			}
 
 			.nav-toggle {
@@ -349,31 +353,66 @@ const isContactPage = currentPath.startsWith('/contact');
 			}
 
 			.nav-menu a {
+				position: relative;
 				padding: 10px 12px;
 				border-radius: 6px;
 				text-decoration: none;
-				font-size: 0.95rem;
-				color: var(--text);
+				font-size: 12.5px;
+				font-weight: var(--nav-link-weight);
+				color: var(--nav-link);
 			}
 
 			.nav-menu a[aria-current='page'] {
-				color: var(--cyan);
-				background: var(--cyan-dim);
+				font-weight: 600;
+				color: var(--nav-link-active);
+			}
+
+			.nav-menu a[aria-current='page']::after {
+				content: '';
+				position: absolute;
+				left: 12px;
+				right: 12px;
+				bottom: 6px;
+				height: 2px;
+				background: var(--nav-active-underline);
+			}
+
+			.theme-toggle {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				flex-shrink: 0;
+				width: 36px;
+				height: 36px;
+				padding: 0;
+				background: none;
+				border: 1px solid var(--nav-toggle-border);
+				border-radius: 6px;
+				color: var(--nav-toggle-color);
+				cursor: pointer;
+			}
+
+			.theme-toggle .icon-moon {
+				display: none;
+			}
+
+			:root[data-theme='light'] .theme-toggle .icon-sun {
+				display: none;
+			}
+
+			:root[data-theme='light'] .theme-toggle .icon-moon {
+				display: inline-flex;
 			}
 
 			.btn-contact {
 				flex-shrink: 0;
 				padding: 8px 18px;
-				background: var(--cyan);
-				color: var(--bg);
-				font-weight: 500;
-				font-size: 0.95rem;
+				background: var(--nav-contact-bg);
+				color: var(--nav-contact-text);
+				font-weight: var(--nav-contact-weight);
+				font-size: 12.5px;
 				text-decoration: none;
 				border-radius: 6px;
-			}
-
-			.btn-contact[aria-current='page'] {
-				opacity: 0.6;
 			}
 
 			@media (max-width: 859px) {
