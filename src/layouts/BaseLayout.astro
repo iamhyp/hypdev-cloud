@@ -600,6 +600,38 @@ const isContactPage = currentPath.startsWith('/contact');
 				text-underline-offset: 4px;
 			}
 
+			/*
+			 * Target size, WCAG 2.2 criterion 2.5.8. These links render
+			 * 16 to 19px tall as text, under the 24px minimum, and none
+			 * of them sit inline in a sentence so the inline exception
+			 * does not apply.
+			 *
+			 * Padding rather than an absolutely positioned pseudo-element
+			 * over the link. The pseudo-element grows the region that
+			 * accepts a pointer, which is what the criterion actually
+			 * measures, but it leaves getBoundingClientRect unchanged, so
+			 * every automated checker still reports a failure and nobody
+			 * auditing this site can see that it passes. Padding grows
+			 * the box itself. These are all inline-level, so the vertical
+			 * padding does not affect line height and the text does not
+			 * move; inside the two flex rows it adds a few pixels of
+			 * height, which touch wants anyway.
+			 *
+			 * .publication-link and .paper-link are here because they
+			 * failed only above 768px. On a phone they wrap onto two
+			 * lines and measure over 24px tall, so a mobile-only sweep
+			 * reports them as passing. Target size is not a mobile
+			 * problem; it is a pointer problem, and a mouse is a pointer.
+			 */
+			.ext,
+			.logo,
+			.hero-link,
+			.link-value,
+			.publication-link,
+			.paper-link {
+				padding-block: 6px;
+			}
+
 			.ext::after {
 				content: '↗';
 				font-size: 12px;
@@ -672,8 +704,8 @@ const isContactPage = currentPath.startsWith('/contact');
 				flex-direction: column;
 				justify-content: center;
 				gap: 5px;
-				width: 36px;
-				height: 36px;
+				width: 44px;
+				height: 44px;
 				padding: 0;
 				background: none;
 				border: 1px solid var(--border-subtle);
@@ -746,8 +778,8 @@ const isContactPage = currentPath.startsWith('/contact');
 				align-items: center;
 				justify-content: center;
 				flex-shrink: 0;
-				width: 40px;
-				height: 40px;
+				width: 44px;
+				height: 44px;
 				padding: 0;
 				background: none;
 				border: 1px solid var(--nav-toggle-border);
@@ -806,13 +838,14 @@ const isContactPage = currentPath.startsWith('/contact');
 					font-size: 1.02rem;
 				}
 
-				.theme-toggle {
-					width: 36px;
-					height: 36px;
-				}
+				/*
+				 * The theme toggle used to shrink to 36px here. That is
+				 * backwards: the target should grow when the pointer
+				 * becomes a fingertip, not shrink. It stays 44px.
+				 */
 
 				.btn-contact {
-					padding: 9px 16px;
+					padding: 15px 16px;
 					font-size: 13px;
 				}
 			}
@@ -898,8 +931,8 @@ const isContactPage = currentPath.startsWith('/contact');
 				display: inline-flex;
 				align-items: center;
 				justify-content: center;
-				width: 38px;
-				height: 38px;
+				width: 44px;
+				height: 44px;
 				border-radius: 50%;
 				color: var(--muted);
 				text-decoration: none;

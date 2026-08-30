@@ -30,7 +30,13 @@
 
 	document.addEventListener('click', function (event) {
 		var target = event.target;
-		if (!navMenu.hidden && !navMenu.contains(target) && target !== navToggle) {
+		// navToggle.contains, not target !== navToggle. The button holds
+		// three span bars, so a tap or a mouse click reports one of those
+		// as the target and the identity test failed: this handler closed
+		// the menu in the same event that opened it, and the menu could
+		// only be opened from the keyboard, where the click event targets
+		// the button itself.
+		if (!navMenu.hidden && !navMenu.contains(target) && !navToggle.contains(target)) {
 			closeMenu();
 		}
 	});

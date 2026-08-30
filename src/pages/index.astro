@@ -1078,7 +1078,12 @@ const techColumns = [
 	.cli-input {
 		flex: 1;
 		min-width: 0;
-		padding: 0;
+		/*
+		 * 2px each side takes the prompt from 23px to 27px, clearing the
+		 * 24px target minimum. The row is baseline aligned, so the text
+		 * does not move; only the box grows.
+		 */
+		padding: 2px 0;
 		border: none;
 		background: none;
 		font-family: inherit;
@@ -1128,6 +1133,19 @@ const techColumns = [
 
 	.cli-ready .cli-form:focus-within .cli-cursor {
 		display: none;
+	}
+
+	/*
+	 * Focus on the prompt was signalled only by the caret replacing the
+	 * block cursor. Correct, but a one-pixel blinking line is a thin
+	 * signal for someone arriving here by keyboard, and the input has no
+	 * outline of its own. The ring goes on the form so the whole prompt
+	 * row reads as the focused thing.
+	 */
+	.cli-ready .cli-form:focus-within {
+		outline: 2px solid var(--term-cyan);
+		outline-offset: 5px;
+		border-radius: 3px;
 	}
 
 	@keyframes terminal-blink {
