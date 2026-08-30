@@ -5,13 +5,13 @@ Source for hypdev.cloud, the professional portfolio site of Lawal Alabe, Platfor
 ## Stack
 
 - [Astro](https://astro.build), static output, strict TypeScript
-- Inter for body text, JetBrains Mono for monospace, both loaded from Google Fonts
-- No client-side framework; content is defined in Astro components and content collections
+- JetBrains Mono throughout, weights 400 to 700, loaded from Google Fonts
+- No client-side framework. Behaviour is four small vanilla scripts served from `public/scripts`, which keeps the Content-Security-Policy free of `unsafe-inline`
 - Deployed on Vercel
 
 ## Local development
 
-Requires Node 20 or later.
+Requires Node 22.12 or later, as pinned in `.nvmrc` and enforced by `engines` in `package.json`.
 
 ```
 npm install
@@ -22,7 +22,7 @@ npm run preview   # preview the production build locally
 
 ## Configuration
 
-Every site-wide value, names, links, certification and publication URLs, the CV path, lives in `src/config/site.ts` as a single typed source of truth. No URL is hardcoded into a component. Values that are not yet available are marked as TODO in that file rather than guessed.
+Every site-wide value, names, links, certification and publication URLs, the CV path, lives in `src/config/site.ts` as a single typed source of truth. No URL is hardcoded into a component. The technical skills list lives in `src/config/skills.ts` and is read by both the CV page and the `stack` shell command, so the two cannot disagree.
 
 ## Security posture
 
