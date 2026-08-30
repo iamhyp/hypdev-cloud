@@ -1,0 +1,300 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteConfig from '../config/site';
+
+function loadIcon(name: string) {
+	return fs.readFileSync(path.join(process.cwd(), 'public/icons', `${name}.svg`), 'utf-8');
+}
+
+/*
+ * Names and Credly URLs both come from site.ts. This page only decides
+ * which certification belongs in which group and which vendor mark it
+ * carries, so a renamed certification or a reissued badge is a one-line
+ * change in the config and nowhere else.
+ */
+function cert(name: string) {
+	const found = siteConfig.certifications.find((entry) => entry.name === name);
+	if (!found) throw new Error(`Certification not found in site.ts: ${name}`);
+	return found;
+}
+
+const groups = [
+	{
+		heading: 'AWS certifications',
+		columns: 3,
+		items: [
+			{ cert: cert('AWS Security Specialty'), icon: 'aws' },
+			{ cert: cert('AWS Solutions Architect Associate'), icon: 'aws' },
+			{ cert: cert('AWS Developer Associate'), icon: 'aws' },
+		],
+	},
+	{
+		heading: 'Infrastructure and networking',
+		columns: 2,
+		items: [
+			{ cert: cert('Terraform Associate'), icon: 'terraform' },
+			{ cert: cert('Cisco CCNA'), icon: 'cisco' },
+		],
+	},
+];
+
+const scholarships = [
+	{
+		name: 'UTS Postgraduate Academic Excellence International Scholarship',
+		body: 'University of Technology Sydney',
+	},
+	{ name: 'Korean Government Scholarship', body: 'Korea Ministry of Education' },
+	{ name: 'Certificate of Excellence', body: 'National Institute for International Education' },
+];
+---
+
+<BaseLayout
+	title="Certifications, Lawal Alabe"
+	description="AWS Security Specialty, Solutions Architect, Developer Associate, Terraform Associate, and Cisco CCNA, with Kubestronaut in progress."
+>
+	<div class="page">
+		<header class="page-head">
+			<h1 class="page-title">Certifications</h1>
+		</header>
+
+		{
+			groups.map((group) => (
+				<section class="group">
+					<h2 class="group-heading">{group.heading}</h2>
+					<ul class="cert-grid" data-columns={group.columns}>
+						{group.items.map((item) => (
+							<li class="cert card">
+								<span class="cert-icon" aria-hidden="true" set:html={loadIcon(item.icon)} />
+								<h3 class="cert-name">{item.cert.name}</h3>
+								<a
+									class="ext cert-verify"
+									href={item.cert.credlyUrl}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									Verify on Credly
+								</a>
+							</li>
+						))}
+					</ul>
+				</section>
+			))
+		}
+
+		<section class="group">
+			<h2 class="group-heading">Kubernetes</h2>
+			<div class="kube card">
+				<span class="kube-icon" aria-hidden="true" set:html={loadIcon('kubernetes')} />
+				<div class="kube-text">
+					<h3 class="kube-name">Kubestronaut</h3>
+					<p class="kube-sub">CNCF, five Kubernetes certifications</p>
+				</div>
+				<p class="pill">in progress</p>
+			</div>
+		</section>
+
+		<section class="group group-last">
+			<h2 class="group-heading">Scholarships and recognition</h2>
+			<ul class="awards">
+				{
+					scholarships.map((award) => (
+						<li class="award">
+							<h3 class="award-name">{award.name}</h3>
+							<p class="award-body">{award.body}</p>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+	</div>
+</BaseLayout>
+
+<style>
+	.group {
+		margin-bottom: 72px;
+	}
+
+	.group-last {
+		margin-bottom: 0;
+	}
+
+	.group-heading {
+		margin: 0 0 28px;
+		padding-bottom: 16px;
+		border-bottom: 1px solid var(--border-faint);
+		font-size: 19px;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--cyan);
+	}
+
+	.cert-grid {
+		display: grid;
+		gap: 20px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.cert-grid[data-columns='3'] {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.cert-grid[data-columns='2'] {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.cert {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 20px;
+		padding: 30px 28px;
+	}
+
+	.cert:hover {
+		border-color: var(--cyan-border);
+		background: var(--card-hover);
+	}
+
+	/*
+	 * AWS and Cisco ship wordmarks rather than glyphs, so the height is
+	 * fixed and the width follows. Forcing every mark into a square
+	 * squashes half of them.
+	 */
+	.cert-icon,
+	.kube-icon {
+		display: flex;
+		align-items: center;
+		height: 30px;
+	}
+
+	.cert-icon :global(svg),
+	.kube-icon :global(svg) {
+		display: block;
+		width: auto;
+		max-width: 68px;
+		height: 30px;
+	}
+
+	.kube-icon :global(svg) {
+		width: 34px;
+		height: 34px;
+	}
+
+	.cert-name {
+		flex: 1;
+		margin: 0;
+		font-size: 17px;
+		font-weight: 600;
+		line-height: 1.45;
+		letter-spacing: -0.02em;
+		text-wrap: balance;
+		color: var(--text);
+	}
+
+	.cert-verify {
+		font-size: 14.5px;
+		font-weight: 500;
+	}
+
+	.kube {
+		display: flex;
+		align-items: center;
+		gap: 24px;
+		padding: 28px;
+	}
+
+	.kube-icon {
+		flex: 0 0 auto;
+		height: 34px;
+	}
+
+	.kube-text {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.kube-name {
+		margin: 0 0 6px;
+		font-size: 18px;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		color: var(--text);
+	}
+
+	.kube-sub {
+		margin: 0;
+		font-size: 14.5px;
+		color: var(--muted);
+	}
+
+	.pill {
+		flex: 0 0 auto;
+		margin: 0;
+		padding: 7px 16px;
+		border: 1px solid var(--amber-border);
+		border-radius: 999px;
+		background: var(--amber-dim);
+		font-size: 13px;
+		font-weight: 600;
+		color: var(--amber-text);
+	}
+
+	.awards {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.award {
+		padding: 24px 0;
+		border-bottom: 1px solid var(--border-faint);
+	}
+
+	.award:first-child {
+		padding-top: 0;
+	}
+
+	.award-name {
+		margin: 0 0 6px;
+		font-size: 16.5px;
+		font-weight: 600;
+		line-height: 1.5;
+		letter-spacing: -0.02em;
+		text-wrap: pretty;
+		color: var(--text);
+	}
+
+	.award-body {
+		margin: 0;
+		font-size: 14.5px;
+		color: var(--faint);
+	}
+
+	@media (max-width: 860px) {
+		.cert-grid[data-columns='3'] {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 620px) {
+		.cert-grid[data-columns='3'],
+		.cert-grid[data-columns='2'] {
+			grid-template-columns: 1fr;
+		}
+
+		.kube {
+			flex-wrap: wrap;
+			gap: 18px;
+		}
+
+		.kube-text {
+			flex: 1 1 100%;
+			order: 3;
+		}
+	}
+</style>
