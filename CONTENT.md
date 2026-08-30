@@ -338,6 +338,12 @@ hidden.
 
 ---
 
+## About page
+
+Heading: About
+
+---
+
 ## About page sidebar
 
 Sidebar contains the avatar and the education
@@ -403,8 +409,7 @@ detection and monitoring work today.
 ## Selected publications
 
 Section heading: Selected publications
-Show three publications. Add a "View all
-publications" link after the third.
+Show three publications.
 
 Publication 1:
 Title: Design and Implementation of Data-Driven
@@ -433,6 +438,8 @@ and url.
 ---
 
 ## Certifications page
+
+Heading: Certifications
 
 Section 1 heading: AWS certifications
 Layout: three cards in a row
@@ -557,6 +564,17 @@ rights and time zone without narrowing to one city.
 
 ---
 
+## 404 page
+
+Heading: Page not found
+Line: That page does not exist. It may have moved, or
+the link may be wrong.
+Link: Back to the home page
+
+No humour, no emojis, no illustration.
+
+---
+
 ## CV page
 
 Heading: Curriculum vitae
@@ -575,9 +593,223 @@ Education, Certifications, and Publications reuse the
 values already defined elsewhere in this file and in
 site.ts. There is one source of truth for each.
 
-Experience content is supplied during the build.
-Claude Code prompts for it section by section and
-does not invent any role, date, or responsibility.
+Experience is the section below, transcribed from
+public/documents/lawal-cv.pdf on 2026-08-30. Nothing
+in it is invented. Correct it here, never in the
+component.
+
+Education on the CV page uses the three entries in
+the About page sidebar section above, which is the
+single source of truth. Note that the PDF also lists
+a Diploma of Engineering from Kwara State
+Polytechnic (August 2012 to September 2014) that the
+sidebar does not; add it there first if it should
+appear on the site.
+
+---
+
+## CV experience
+
+Four roles, most recent first. Dates exactly as
+written.
+
+### Nexon
+Role: Systems Support Engineer
+Dates: January 2026 to present
+- Manage hybrid-cloud environments spanning
+  on-premises and cloud-hosted production servers;
+  plan hybrid AD-to-cloud identity synchronisation,
+  defining attribute scope and sync rules.
+- Diagnose multi-layered connectivity failures across
+  VPN, firewall and secure web gateway platforms
+  through systematic log analysis, reconfiguring
+  cloud Zero Trust access policies to restore secure
+  client application access.
+- Design and enforce compliance-driven security
+  configurations, including data retention and
+  litigation hold, aligned with regulatory audit and
+  data-governance obligations.
+- Diagnose and resolve endpoint web-protection blocks
+  by analysing Windows Defender Exploit Guard logs
+  and Cloud Discovery policy conflicts, implementing
+  sanctioning exceptions in Defender for Cloud Apps.
+- Track Endpoint Detection and Response alerts,
+  perform risk assessments, and execute patching
+  routines for server CVE vectors.
+- Investigate and respond to security incidents
+  involving compromised credentials, diagnosing
+  broken secure-channel configurations and
+  remediating legacy authentication vulnerabilities.
+- End-to-end database provisioning and
+  decommissioning across client environments,
+  including configuration, access setup, and
+  lifecycle compliance.
+- Harden production access through authorised
+  jumpboxes and manage RMM-escalated endpoint
+  compliance alerts.
+- Develop and maintain automation scripts to support
+  identity lifecycle management, system health
+  monitoring, and administrative efficiency across
+  cloud services.
+- Resolve enterprise email delivery failures across
+  hybrid mail environments by analysing DNS SPF and
+  DMARC records, mail routing paths and third-party
+  gateway configurations.
+- Configure NPS and RADIUS, VPN profiles, routing,
+  ACLs and VLANs to client segmentation and
+  compliance requirements; resolve multi-platform
+  network faults via LogicMonitor, Meraki and
+  Fortinet.
+- Implement federated authentication (SAML 2.0 SSO),
+  managing metadata configurations and token
+  validation keys.
+
+### Pukyong National University, QCL Lab
+Role: Research Assistant
+Dates: September 2021 to August 2023
+- Spearheaded end-to-end development of embedded
+  monitoring systems across the full software
+  engineering lifecycle.
+- Designed, architected and deployed real-time
+  software applications for industrial platforms,
+  aligning technical specifications with strict
+  reliability and scalability standards.
+- Optimised Python and C++ algorithms for
+  low-latency predictive modelling across real-time
+  data streams.
+- Built low-level APIs and hardware abstraction
+  interfaces to enable communication between data
+  acquisition hardware and embedded systems.
+- Established unit and integration testing
+  frameworks to automate QA validation, boost code
+  reliability and maintain accuracy benchmarks.
+- Partnered with multidisciplinary teams to integrate
+  cloud and on-premises backends for high-accuracy
+  fault detection models.
+- Created custom diagnostic and analytical tools to
+  evaluate system performance and generate actionable
+  operational insights.
+- Authored technical documentation covering system
+  architecture and algorithm design to streamline
+  onboarding and ensure project reproducibility.
+Highlighted projects: EPS Defect Monitoring
+Software, Eyewear Display Controller
+
+### Olamax Associates LTD
+Role: Infrastructure Engineer
+Dates: July 2020 to June 2021
+- Designed and delivered the AWS infrastructure for
+  the Fast Trade digital financial-services platform,
+  supporting secure, highly available card and
+  fiat-wallet purchasing and trading.
+- Built and maintained CI/CD pipelines in GitHub
+  Actions and AWS CodePipeline; automated cloud
+  resource provisioning with Terraform for
+  consistent development, testing and production
+  environments.
+- Architected VPC network segmentation,
+  security-group rules and AWS WAF policies
+  protecting compliance and audit portals; performed
+  periodic AWS security reviews across IAM, exposed
+  services and encryption, remediating findings.
+- Secured payment-provider API credentials via a
+  managed secrets process with scheduled rotation and
+  least-privilege service access.
+- Integrated dependency and vulnerability scanning
+  into the release pipeline, triaging and remediating
+  issues before deployment.
+- Automated KMS-encrypted backups, TLS certificate
+  renewals and pre-release checks; implemented
+  disaster recovery with automated failover for
+  critical accounts databases.
+- Deployment architecture and automation for
+  real-time airtime and data services across MTN,
+  Glo, Airtel and 9mobile; defined database schema
+  conventions with multiple teams for AR and AP
+  systems.
+- Advised business stakeholders on system strategy;
+  authored standard operating procedures covering
+  environment setup, network configuration and
+  secure-configuration baselines.
+
+### Olamax Associates LTD
+Role: IT Systems Engineer
+Dates: June 2019 to June 2020
+- Managed and upgraded on-premises ICT infrastructure
+  including VMware virtualisation environments and
+  physical servers, overseeing SSL certificate
+  lifecycle management and DNS record maintenance
+  within the MainOne datacentre.
+- Administered Active Directory, Group Policy, Azure
+  AD Connect and Microsoft 365 (Exchange, SCCM,
+  SharePoint, Teams), enforcing identity governance
+  and least-privilege access.
+- Deployed and configured Fortinet appliances to
+  secure the network perimeter, establishing
+  site-to-site and remote-access VPN tunnels and
+  enforcing traffic inspection policies.
+- Designed and deployed network failover solutions
+  leveraging Spectranet connectivity, configuring
+  hardware load balancers to ensure consistent
+  traffic distribution and sustained redundancy.
+- Integrated PRTG Network Monitor and WhatsUp Gold to
+  deliver continuous visibility into network traffic
+  patterns, capacity utilisation and overall network
+  health.
+- Responded to and contained security incidents
+  including malware infections and unauthorised
+  access attempts, documenting each resolution.
+- Delivered Tier-3 support during critical network
+  outages, conducting root cause analysis and
+  coordinating technical escalations with ISPs.
+- Assessed existing infrastructure to define a
+  forward-looking technical roadmap, maintaining
+  documentation of ICT assets, incident records and
+  fault resolutions.
+
+---
+
+## CV technical skills
+
+Grouped as on the PDF. The home page tech stack is a
+shorter, curated view of the same thing; this is the
+full list.
+
+Cloud and infrastructure
+AWS: VPC, EC2, S3, RDS, Lambda, ECS, EKS,
+CloudWatch, GuardDuty, CloudTrail, WAF
+Microsoft Cloud: Azure VNet, Azure Monitor, Azure
+Proxy, Intune, M365 Admin, Purview, Defender
+Infrastructure as code and DevOps: Terraform,
+CloudFormation, Ansible, CI/CD (GitHub Actions, AWS
+CodePipeline)
+Architecture: hybrid cloud, cloud migration, multi-AZ
+architecture, disaster recovery planning
+Programming and automation: Python, C++, PowerShell,
+Bash
+
+Security, networking and compliance
+Frameworks and standards: Essential 8, ISO 27001,
+NIST 800-171 and 177, PCI DSS, GDPR
+Network and perimeter security: Palo Alto Networks,
+Fortinet, Checkpoint, WAF, security groups, network
+ACLs
+Identity and access management: IAM and RBAC, MFA,
+Active Directory, Group Policy, access control
+systems
+Networking protocols: TCP/IP, DNS, DHCP, VLAN,
+SD-WAN, MPLS, Cisco, Aruba, Meraki
+Monitoring: PRTG, WhatsUp Gold, Cacti
+
+Systems and virtualisation
+Operating systems: Linux (Ubuntu and RHEL), Windows
+Server 2016 to 2022
+Virtualisation and VDI: VMware vSphere and ESXi,
+Hyper-V, virtual desktop infrastructure
+Endpoint and systems management: SCCM, MDM
+
+Service management
+Ticketing: ServiceNow, Jira, Spiceworks
 
 ---
 
