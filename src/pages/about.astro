@@ -37,18 +37,30 @@ const paragraphs = [
 	description="Platform Security Engineer with two funded postgraduate degrees in AI Convergence Engineering and Cyber Security Engineering."
 >
 	<div class="page">
-		<header class="page-head">
-			<h1 class="page-title">About</h1>
+		{/*
+		  The portrait leads. It is the one thing on this page that is not
+		  text, so it gets a band of its own rather than being reduced to
+		  a thumbnail in a sidebar. Cut out of its studio background and
+		  graded to the palette, it sits in the page instead of on top of
+		  it; a colour photograph on this ground reads as a sticker.
+		*/}
+		<header class="intro">
+			<div class="intro-text">
+				<h1 class="page-title">About</h1>
+				<p class="intro-lead">{paragraphs[0]}</p>
+			</div>
+			<img
+				class="portrait"
+				src="/images/portrait.webp"
+				alt="Lawal Alabe"
+				width="777"
+				height="900"
+				fetchpriority="high"
+			/>
 		</header>
 
 		<div class="about-layout">
 			<aside class="about-sidebar">
-				{/*
-				  A monogram rather than a photograph. The name is the
-				  brand mark on this site, so the avatar echoes it.
-				*/}
-				<p class="avatar" aria-hidden="true">L</p>
-
 				<h2 class="sidebar-heading">Education</h2>
 				<ul class="education">
 					{
@@ -64,7 +76,7 @@ const paragraphs = [
 			</aside>
 
 			<div class="about-main">
-				{paragraphs.map((text) => <p class="about-paragraph">{text}</p>)}
+				{paragraphs.slice(1).map((text) => <p class="about-paragraph">{text}</p>)}
 
 				<h2 class="section-title publications-heading">Selected publications</h2>
 				<ol class="publications">
@@ -97,6 +109,51 @@ const paragraphs = [
 </BaseLayout>
 
 <style>
+	.intro {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) 340px;
+		gap: 56px;
+		align-items: end;
+		margin-bottom: 72px;
+		padding-bottom: 56px;
+		border-bottom: 1px solid var(--border-faint);
+	}
+
+	.intro-text {
+		padding-bottom: 8px;
+	}
+
+	.intro-lead {
+		margin: 28px 0 0;
+		max-width: 620px;
+		font-size: 18px;
+		line-height: 1.8;
+		text-wrap: pretty;
+		color: var(--muted);
+	}
+
+	/*
+	 * The base of the portrait dissolves rather than stopping on a cut
+	 * line. The photograph is a chest-up studio crop, so without this it
+	 * ends on a hard horizontal edge that reads as a mistake.
+	 */
+	.portrait {
+		display: block;
+		width: 100%;
+		height: auto;
+		mask-image: linear-gradient(to bottom, #000 68%, transparent 98%);
+		-webkit-mask-image: linear-gradient(to bottom, #000 68%, transparent 98%);
+	}
+
+	/*
+	 * Graded for the dark page. On the light theme the same file would
+	 * float as a grey shape, so it takes a little contrast and a touch of
+	 * warmth back to sit on cream.
+	 */
+	:root[data-theme='light'] .portrait {
+		filter: contrast(1.08) brightness(0.94) sepia(0.06);
+	}
+
 	.about-layout {
 		display: grid;
 		grid-template-columns: 240px minmax(0, 1fr);
@@ -107,22 +164,6 @@ const paragraphs = [
 	.about-sidebar {
 		padding-right: 40px;
 		border-right: 1px solid var(--border-faint);
-	}
-
-	.avatar {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 64px;
-		height: 64px;
-		margin: 0 0 40px;
-		border: 1px solid var(--cyan-border);
-		border-radius: 50%;
-		background: var(--cyan-dim);
-		font-size: 26px;
-		font-weight: 700;
-		letter-spacing: -0.03em;
-		color: var(--cyan);
 	}
 
 	.sidebar-heading {
@@ -241,6 +282,21 @@ const paragraphs = [
 		margin: 0;
 		font-size: 14.5px;
 		color: var(--cyan);
+	}
+
+	@media (max-width: 900px) {
+		.intro {
+			grid-template-columns: 1fr;
+			gap: 32px;
+			align-items: start;
+			margin-bottom: 56px;
+			padding-bottom: 44px;
+		}
+
+		.portrait {
+			width: 260px;
+			margin-top: 8px;
+		}
 	}
 
 	@media (max-width: 860px) {

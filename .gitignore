@@ -46,3 +46,6 @@ Temporary Items
 
 # gitleaks
 gitleaks-report.json
+
+# original camera files: kept on disk, never served or committed
+source-photos/

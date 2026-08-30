@@ -345,13 +345,32 @@ Heading: About
 
 ---
 
+## About page portrait
+
+A cut-out portrait leads the page, beside the
+heading and the first paragraph. Held at
+public/images/portrait.webp: the studio background
+is removed and the image is graded to the palette,
+because a colour photograph on this ground reads as
+a sticker rather than part of the page. Its base
+fades out rather than ending on a cut line.
+
+Originals live in source-photos/, which is
+gitignored and never served. Regenerate the
+derivative from IMG_1300.PNG if the crop or grade
+needs to change; do not put a multi-megabyte camera
+file in public/.
+
+---
+
 ## About page sidebar
 
-Sidebar contains the avatar and the education
-entries only. Do not repeat the name, role, or
-location in the sidebar. The navigation and the
-hero already establish those, and repeating them
-is redundancy rather than reinforcement.
+Sidebar contains the education entries only. The
+portrait moved to the page header on 2026-08-30. Do
+not repeat the name, role, or location in the
+sidebar. The navigation and the hero already
+establish those, and repeating them is redundancy
+rather than reinforcement.
 
 Education entries in this order:
 
