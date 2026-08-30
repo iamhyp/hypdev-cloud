@@ -51,17 +51,163 @@ hands-on work from production environments.
 Build the home page in this order.
 
 1. Hero: name, role line, subtitle line, location
-   line, paragraph, buttons.
+   line, paragraph, buttons, stats row.
 2. Terminal window. It is the most visually striking
    element on the page and belongs near the top where
    visitors actually see it, not below the fold.
 3. Security pillars.
 4. Tech stack.
-5. Stats row.
 
-Credentials land after the substance. The pillars
-say how you think, which is more distinctive than a
-certification count anyone can claim.
+The stats row moved into the hero on 2026-08-29. A
+recruiter should not have to scroll to the bottom of
+the page to find out that the credentials exist; the
+pillars still carry the substance, and the stats now
+sit as a supporting line under the introduction
+rather than as a footnote.
+
+Every section from 2 onward carries a heading block:
+a heading and a one-line subtitle. An unlabelled
+section makes a visitor work out what they are
+looking at. The headings are the approved copy below
+and are not to be reworded.
+
+---
+
+## Home page section headings
+
+Section 2, terminal
+Heading: How a change reaches production
+Subtitle: Plan it, sign it, scan it, then prove the
+cluster agrees. Nothing ships unverified.
+
+Section 3, security pillars
+Heading: How I think about security
+Subtitle: Four layers, in the order I reason about
+them on every platform I build.
+
+Section 4, tech stack
+Heading: Tech stack
+Subtitle: Tools and platforms I run in production.
+
+---
+
+## The shell
+
+The terminal on the home page is interactive. It
+replaced an auto-typing animation on 2026-08-29.
+
+Every command's output is written here and rendered
+into the page by the component; the script clones it.
+Nothing in this section may be duplicated into
+JavaScript, and no command may return content that
+is not in this file or already in src/config/site.ts.
+
+Rules the shell must keep:
+
+No easter eggs and no joke commands. Every command
+returns something true about the work.
+
+No artificial delay. Nothing pretends to think.
+
+Tab completes, Up and Down recall history, Ctrl+L
+clears. These are the reason it is a terminal rather
+than a picture of one.
+
+Every command is also a button in the Commands list
+beside it, so the shell is fully usable without
+typing, on a phone, and with a mouse.
+
+Nothing is reachable only through the shell. Every
+command's content exists elsewhere on the site.
+
+Boot state: the pipeline command has already been
+run, so the section delivers what its heading
+promises before anyone types anything.
+
+### pipeline
+Summary: how a change reaches production
+plan     Reviewed before anything is applied.
+         Nothing is changed by hand in a console.
+sign     An image without verifiable provenance does
+         not reach the cluster.
+scan     Gated on CRITICAL. Zero is the only number
+         that passes.
+enforce  The cluster proves the policy holds. I do
+         not assume that it does.
+
+### whoami
+Summary: who I am and what I do
+Lawal Alabe
+Platform Security Engineer / DevSecOps
+Sydney, Australia · available remote
+I build secure platforms and harden cloud-native
+infrastructure at scale.
+
+### stack
+Summary: platforms and tooling I run in production
+cloud      AWS, Azure
+infra      Terraform, Kubernetes, Docker
+ci/cd      Jenkins, GitHub Actions, ArgoCD, Ansible
+languages  Python, C++, Bash, PowerShell
+
+### certs
+Summary: credentials, each verifiable
+Lists the certifications from src/config/site.ts,
+each linking to its Credly badge. Never hardcoded.
+
+### contact
+Summary: how to reach me
+Email, LinkedIn and GitHub, all from
+src/config/site.ts.
+
+### cv
+Summary: download the CV
+Links to the CV page.
+
+### help and clear
+Built in. The help listing is generated from the
+commands above, so it can never fall out of step
+with them.
+
+---
+
+## Live figures
+
+A single row at the foot of the tech stack section,
+fed from the GitHub API at request time through
+/api/github.
+
+Label: Live from the GitHub API
+Figure 1 label: Public repositories
+Figure 2 label: Stars earned
+Figure 3 label: Last push
+
+The row does not render at all unless real values
+arrive. A failed request, a rate limit, or
+JavaScript being off all produce no row rather than
+zeroes or a spinner. A page that claims live data
+and then shows "0" is worse than one that never made
+the claim.
+
+---
+
+## Footer
+
+Left: the domain and the current year.
+Right: four circular icon links, in this order, each
+with a label naming its destination for assistive
+technology — CV, GitHub, LinkedIn, Email.
+
+---
+
+## Home page end
+
+The home page ends at the tech stack and its live
+figures row. Certifications
+live on their own page, reachable from the
+navigation; an availability badge and a closing call
+to action were built on 2026-08-29 and removed the
+same day at the user's direction.
 
 ---
 
@@ -168,25 +314,14 @@ locally. Do not use a CDN.
 
 ---
 
-## Terminal animation commands
-
-Cycle through these commands in order with a typing
-and deleting effect. Use JetBrains Mono font.
-
-terraform init && terraform plan -out=tfplan
-cosign verify --key cosign.pub registry/app:prod
-trivy image --severity CRITICAL app:v3
-opa eval --data policy/ --input request.json data.allow
-kubectl auth can-i --list --namespace production
-falco --rules custom_rules.yaml --output-format json
-
----
-
 ## Navigation
 
 Order: Home, Projects, About, Certifications, Blog
-Right side: theme toggle, then the Contact button as
-the primary call to action.
+Right side: GitHub and LinkedIn icon links, then the
+theme toggle, then the Contact button as the primary
+call to action. The two icon links are hidden below
+900px, where the bar has no room for them; the same
+links remain in the footer at every width.
 
 The CV page is not in the main navigation. It is
 reachable from the contact page and the footer.

@@ -19,16 +19,40 @@ hypdev.cloud is a professional portfolio site for a Platform Security Engineer.
 
 | Token | Value |
 | --- | --- |
-| Background | `#08090e` |
-| Background secondary | `#0c0d14` |
-| Card | `#101119` |
-| Card hover | `#13141f` |
+| Background | `#0c0e13` |
+| Background secondary | `#101319` |
+| Card | `#151822` |
+| Card hover | `#1b1f2b` |
 | Accent cyan | `#00bcd4` |
-| Text | `#e8eaf0` |
-| Muted | `#8892aa` |
-| Faint | `#464f6a` |
+| Text | `#d2d8e4` |
+| Muted | `#98a3b8` |
+| Faint | `#7f8aa3` |
 
-Fonts: Inter for body text, JetBrains Mono for monospace.
+Dark is designed, not mirrored from light. It was rebuilt on 2026-08-29
+after the two palettes ended up numerically symmetric (17.85:1 against
+17.95:1 for text, and so on) and the dark one still read worse. Three
+reasons, none of which are fixed by raising contrast:
+
+1. Halation. Light text on near-black bleeds outward optically; dark
+   text on white does not. `--text` is deliberately *lower* contrast in
+   dark, 13.5:1, because 17.9:1 reads as glowing rather than crisp.
+2. Optical weight. The same glyph looks thinner on dark, so
+   `--body-weight` is 500 in dark and 400 in light, and
+   `-webkit-font-smoothing` is `auto` in dark (grayscale smoothing thins
+   strokes further) against `antialiased` in light.
+3. Elevation. Light gets depth from shadow, which does not work on dark.
+   Dark gets it from surfaces, so `--card` is a genuinely lighter plane
+   rather than the 1.04:1 nudge it was.
+
+Do not "fix" a dim-looking dark theme by brightening text. Check which
+of the three it actually is. Every tier still clears 5:1 in both themes.
+
+Font: JetBrains Mono throughout, weights 400/500/600/700. There is no
+second family. Inter was dropped on 2026-08-29 when the home page was
+matched to daryl.sh, which takes its coherence from committing to a
+single monospace. Anything set at 600 or 700 needs those faces actually
+requested in the stylesheet link; synthesised bold is the difference
+between a designed page and a generated one.
 
 ## Design standard
 
