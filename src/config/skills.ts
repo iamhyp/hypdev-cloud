@@ -29,7 +29,7 @@ export const skillGroups: SkillGroup[] = [
 				key: 'aws',
 				value: 'VPC, EC2, S3, RDS, Lambda, ECS, EKS, CloudWatch, GuardDuty, CloudTrail, WAF',
 			},
-			{ key: 'azure', value: 'Azure VNet, Azure Monitor, Azure Proxy, Defender' },
+			{ key: 'azure', value: 'Azure VNet, Azure Monitor, Entra application proxy' },
 			{
 				key: 'iac and devops',
 				value: 'Terraform, CloudFormation, Ansible, CI/CD (GitHub Actions, AWS CodePipeline)',
@@ -54,6 +54,11 @@ export const skillGroups: SkillGroup[] = [
 				value: 'IAM and RBAC, MFA, Active Directory, Group Policy, access control systems',
 			},
 			{ key: 'networking', value: 'TCP/IP, DNS, DHCP, VLAN, SD-WAN, MPLS, Cisco, Aruba, Meraki' },
+			{
+				key: 'threat protection',
+				value:
+					'Defender for Cloud Apps, Defender for Endpoint, Windows Defender Exploit Guard',
+			},
 			{ key: 'monitoring', value: 'PRTG, WhatsUp Gold, Cacti' },
 		],
 	},
