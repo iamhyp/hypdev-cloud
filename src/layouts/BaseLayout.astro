@@ -337,6 +337,12 @@ const isContactPage = currentPath.startsWith('/contact');
 				--cyan: #00bcd4;
 				--cyan-dim: rgba(0, 188, 212, 0.08);
 				--cyan-border: rgba(0, 188, 212, 0.2);
+				/*
+				 * Accent text sitting on the accent tint rather than on the
+				 * page. Dark needs no correction: #00bcd4 measures 6.85:1
+				 * on its own tint over the card. Light does, see below.
+				 */
+				--cyan-on-tint: #00bcd4;
 				--amber-text: #e8a020;
 				--amber-dim: rgba(232, 160, 32, 0.1);
 				--amber-border: rgba(232, 160, 32, 0.3);
@@ -376,6 +382,15 @@ const isContactPage = currentPath.startsWith('/contact');
 				--cyan: #00798c;
 				--cyan-dim: rgba(0, 121, 140, 0.09);
 				--cyan-border: rgba(0, 121, 140, 0.25);
+				/*
+				 * #00798c on the tint is 4.39:1, just under the 4.5:1 that
+				 * 12px text needs. Lighthouse caught it on the scholarship
+				 * badges; the token pairs checked earlier were accent on
+				 * page, never accent on its own tint. #006472 gives 5.9:1
+				 * on the tint and 6.6:1 on the page, so it holds wherever
+				 * the pill is placed. The page accent is untouched.
+				 */
+				--cyan-on-tint: #006472;
 				--amber-text: #8a5a00;
 				--amber-dim: rgba(138, 90, 0, 0.08);
 				--amber-border: rgba(138, 90, 0, 0.3);
