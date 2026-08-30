@@ -679,7 +679,7 @@ Four roles, most recent first. Dates exactly as
 written.
 
 ### Nexon
-Role: Systems Support Engineer
+Role: Professional Services Engineer
 Dates: January 2026 to present
 - Manage hybrid-cloud environments spanning
   on-premises and cloud-hosted production servers;
