@@ -21,6 +21,10 @@ const navLinks = [
 	{ href: '/about/', label: 'About' },
 	{ href: '/certifications/', label: 'Certifications' },
 	{ href: '/blog/', label: 'Blog' },
+	// The CV is a button in the bar above 859px and a menu row below it,
+	// where the bar has no space for a third control. One entry, two
+	// placements, so the two can never list different destinations.
+	{ href: '/cv/', label: 'CV', menuOnly: true },
 ];
 
 function isActive(href: string) {
@@ -109,7 +113,11 @@ const isContactPage = currentPath.startsWith('/contact');
 				<div class="nav-menu" id="nav-menu" hidden>
 					{
 						navLinks.map((link) => (
-							<a href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
+							<a
+								href={link.href}
+								data-menu-only={link.menuOnly ? '' : undefined}
+								aria-current={isActive(link.href) ? 'page' : undefined}
+							>
 								{link.label}
 							</a>
 						))
@@ -185,6 +193,14 @@ const isContactPage = currentPath.startsWith('/contact');
 						<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
 					</svg>
 				</button>
+
+				<a
+					href="/cv/"
+					class="btn-cv"
+					aria-current={currentPath.startsWith('/cv') ? 'page' : undefined}
+				>
+					CV
+				</a>
 
 				<a
 					href="/contact/"
@@ -806,6 +822,37 @@ const isContactPage = currentPath.startsWith('/contact');
 				margin-left: auto;
 			}
 
+			/*
+			 * The CV sits beside Contact rather than in the link list. It
+			 * is the highest-intent page on the site for the audience this
+			 * is built for, and the link list currently leads with two
+			 * pages that are empty by design. Outline against Contact's
+			 * fill: a pair of actions, with the primary one still obvious.
+			 */
+			.btn-cv {
+				flex-shrink: 0;
+				padding: 10px 20px;
+				border: 1px solid var(--border-subtle);
+				color: var(--text);
+				font-weight: 500;
+				font-size: 15px;
+				letter-spacing: -0.01em;
+				text-decoration: none;
+				border-radius: 999px;
+				transition:
+					border-color 0.15s ease,
+					background-color 0.15s ease;
+			}
+
+			.btn-cv:hover {
+				border-color: var(--cyan);
+				background: var(--cyan-dim);
+			}
+
+			.btn-cv[aria-current='page'] {
+				border-color: var(--cyan);
+			}
+
 			.btn-contact {
 				flex-shrink: 0;
 				padding: 11px 24px;
@@ -850,7 +897,19 @@ const isContactPage = currentPath.startsWith('/contact');
 				}
 			}
 
+			@media (min-width: 860px) {
+				.nav-menu [data-menu-only] {
+					display: none;
+				}
+			}
+
 			@media (max-width: 859px) {
+				/* Three controls plus the logo is too much at 375px, so the
+				   CV button drops out here and appears in the menu instead. */
+				.btn-cv {
+					display: none;
+				}
+
 				.nav-toggle {
 					display: inline-flex;
 				}
