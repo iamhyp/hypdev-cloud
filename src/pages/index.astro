@@ -49,7 +49,12 @@ function loadIcon(name: string) {
  * command here adds it everywhere, and nothing can drift out of sync.
  */
 type CliLine = {
+	// key reserves the 152px alignment column, for genuine key/value rows
+	// like plan/sign/scan. marker is a bullet or arrow that hugs its text.
+	// Using key for a single character left the bullet lists with 152px of
+	// empty space between the bullet and the item.
 	key?: string;
+	marker?: string;
 	text?: string;
 	href?: string;
 	external?: boolean;
@@ -97,7 +102,7 @@ const commands: CliCommand[] = [
 		lines: [
 			{ text: `${siteConfig.certifications.length} credentials, each verifiable on Credly:`, tone: 'muted' },
 			...siteConfig.certifications.map((cert) => ({
-				key: '·',
+				marker: '·',
 				text: cert.name,
 				href: cert.credlyUrl,
 				external: true,
@@ -126,7 +131,7 @@ const commands: CliCommand[] = [
 	{
 		name: 'cv',
 		summary: 'download the CV',
-		lines: [{ key: '→', text: 'Open the CV page', href: '/cv/' }],
+		lines: [{ marker: '→', text: 'Open the CV page', href: '/cv/' }],
 	},
 ];
 
@@ -273,6 +278,7 @@ const techColumns = [
 							bootCommand.lines.map((line) => (
 								<p class="cli-line">
 									{line.key && <span class="cli-key">{line.key}</span>}
+									{line.marker && <span class="cli-marker">{line.marker}</span>}
 									<span class="cli-text">{line.text}</span>
 								</p>
 							))
@@ -348,6 +354,7 @@ const techColumns = [
 					{command.lines.map((line) => (
 						<p class={`cli-line${line.tone ? ' cli-line-' + line.tone : ''}`}>
 							{line.key && <span class="cli-key">{line.key}</span>}
+							{line.marker && <span class="cli-marker">{line.marker}</span>}
 							{line.href ? (
 								<a
 									class="cli-link"
@@ -1021,6 +1028,16 @@ const techColumns = [
 	 */
 	.cli-key {
 		flex: 0 0 152px;
+		color: var(--term-green);
+	}
+
+	/*
+	 * A marker sits against its text rather than reserving the alignment
+	 * column. 2ch plus the row gap keeps every marker in a list on the
+	 * same axis without opening a gap the eye has to jump.
+	 */
+	.cli-marker {
+		flex: 0 0 2ch;
 		color: var(--term-green);
 	}
 
