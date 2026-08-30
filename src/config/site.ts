@@ -28,6 +28,10 @@ export interface SiteConfig {
 	social: {
 		linkedin: string;
 		github: string;
+		// Bare username, used by the /api/github serverless route. Kept
+		// separate from the profile URL so neither has to be parsed out
+		// of the other.
+		githubUser: string;
 		email: string;
 	};
 	certifications: Certification[];
@@ -50,8 +54,10 @@ export const siteConfig: SiteConfig = {
 	},
 	social: {
 		linkedin: 'https://www.linkedin.com/in/lawal-alabe-546873125/',
-		// TODO: GitHub profile is not built yet — set the real URL once it exists.
-		github: 'TODO',
+		// Taken from this repository's own git remote. Confirm this is the
+		// account you want the site to point at before deploying.
+		github: 'https://github.com/iamhyp',
+		githubUser: 'iamhyp',
 		email: 'hyperdevroot@gmail.com',
 	},
 	certifications: [
