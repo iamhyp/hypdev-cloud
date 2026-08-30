@@ -49,3 +49,9 @@ gitleaks-report.json
 
 # original camera files: kept on disk, never served or committed
 source-photos/
+
+# internal working documents: the build log and the approved-content
+# source. Kept on disk and read by every session, not published. They
+# are working notes rather than part of the deliverable.
+SESSION_NOTES.md
+CONTENT.md

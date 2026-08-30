@@ -11,6 +11,7 @@ hypdev.cloud is a professional portfolio site for a Platform Security Engineer.
 - Vendor logos are served locally from `public/icons` and never from a CDN.
 - Never commit anything resembling a secret; flag it instead.
 - Source assets and unprocessed originals never go in the repository. Only optimised, web-ready files belong in `public`. Keep originals outside the project directory.
+- `CONTENT.md` and `SESSION_NOTES.md` are gitignored on purpose. They are working documents, not part of what this repository publishes, and they live on disk beside it. Every rule below that refers to them still applies.
 - At the start of every session, read `SESSION_NOTES.md` and state the current position before doing anything.
 - At the end of every session, update `SESSION_NOTES.md` with completed work, in-progress items, and the next step.
 - All commits use meaningful messages describing the change.
