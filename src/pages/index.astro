@@ -447,34 +447,6 @@ const techColumns = [
 <script is:inline src="/scripts/github.js"></script>
 
 <style>
-	/*
-	 * Shared section heading: a heading and a single line of subtitle.
-	 * Unlabelled sections made a visitor work out what they were looking
-	 * at, which is the last thing someone skimming is going to do.
-	 */
-	.section-head {
-		margin: 0 0 48px;
-	}
-
-	.section-title {
-		margin: 0;
-		text-wrap: balance;
-		font-size: clamp(28px, 3.3vw, 40px);
-		font-weight: 700;
-		line-height: 1.15;
-		letter-spacing: -0.035em;
-		color: var(--text);
-	}
-
-	.section-subtitle {
-		margin: 16px 0 0;
-		text-wrap: pretty;
-		max-width: 620px;
-		font-size: 16.5px;
-		line-height: 1.7;
-		color: var(--muted);
-	}
-
 	.hero {
 		position: relative;
 		isolation: isolate;
@@ -691,38 +663,6 @@ const techColumns = [
 		gap: 24px;
 		padding-left: 24px;
 		border-left: 1px solid var(--border-faint);
-	}
-
-	.btn-primary {
-		padding: 16px 32px;
-		background: var(--cyan);
-		color: var(--bg);
-		font-size: 16px;
-		font-weight: 600;
-		letter-spacing: -0.005em;
-		text-decoration: none;
-		border-radius: 999px;
-		transition: filter 0.15s ease;
-	}
-
-	.btn-primary:hover {
-		filter: brightness(1.08);
-	}
-
-	.btn-outline {
-		padding: 16px 32px;
-		border: 1px solid var(--border-subtle);
-		color: var(--text);
-		font-size: 16px;
-		font-weight: 600;
-		letter-spacing: -0.005em;
-		text-decoration: none;
-		border-radius: 999px;
-		transition: border-color 0.15s ease;
-	}
-
-	.btn-outline:hover {
-		border-color: var(--muted);
 	}
 
 	/*

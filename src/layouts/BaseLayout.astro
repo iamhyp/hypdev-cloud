@@ -320,7 +320,10 @@ const isContactPage = currentPath.startsWith('/contact');
 				--nav-shadow: none;
 				--cyan: #00bcd4;
 				--cyan-dim: rgba(0, 188, 212, 0.08);
-				--cyan-border: rgba(0, 188, 212, 0.14);
+				--cyan-border: rgba(0, 188, 212, 0.2);
+				--amber-text: #e8a020;
+				--amber-dim: rgba(232, 160, 32, 0.1);
+				--amber-border: rgba(232, 160, 32, 0.3);
 				--text: #d2d8e4;
 				--muted: #98a3b8;
 				--faint: #7f8aa3;
@@ -357,6 +360,9 @@ const isContactPage = currentPath.startsWith('/contact');
 				--cyan: #00798c;
 				--cyan-dim: rgba(0, 121, 140, 0.09);
 				--cyan-border: rgba(0, 121, 140, 0.25);
+				--amber-text: #8a5a00;
+				--amber-dim: rgba(138, 90, 0, 0.08);
+				--amber-border: rgba(138, 90, 0, 0.3);
 				--text: #12141a;
 				--muted: #454c5c;
 				--faint: #5c6474;
@@ -461,6 +467,158 @@ const isContactPage = currentPath.startsWith('/contact');
 
 			main:focus {
 				outline: none;
+			}
+
+			/*
+			 * Page primitives, shared by every page. These lived in the
+			 * home page's scoped styles until there was more than one
+			 * page to share them with; duplicating a button across seven
+			 * files is how a design system stops being one.
+			 */
+
+			.page {
+				max-width: 1120px;
+				margin: 0 auto;
+				padding: 80px 24px 112px;
+			}
+
+			.page-head {
+				margin: 0 0 56px;
+			}
+
+			.page-title {
+				margin: 0;
+				font-size: clamp(38px, 5.5vw, 62px);
+				font-weight: 700;
+				line-height: 1.05;
+				letter-spacing: -0.04em;
+				text-wrap: balance;
+				color: var(--text);
+			}
+
+			.page-intro {
+				margin: 20px 0 0;
+				max-width: 640px;
+				font-size: 17px;
+				line-height: 1.75;
+				text-wrap: pretty;
+				color: var(--muted);
+			}
+
+			/* Section heading inside a page. */
+
+			.section-head {
+				margin: 0 0 48px;
+			}
+
+			.section-title {
+				margin: 0;
+				font-size: clamp(28px, 3.3vw, 40px);
+				font-weight: 700;
+				line-height: 1.15;
+				letter-spacing: -0.035em;
+				text-wrap: balance;
+				color: var(--text);
+			}
+
+			.section-subtitle {
+				margin: 16px 0 0;
+				max-width: 620px;
+				font-size: 16.5px;
+				line-height: 1.7;
+				text-wrap: pretty;
+				color: var(--muted);
+			}
+
+			/* Buttons. */
+
+			.btn-primary {
+				display: inline-flex;
+				align-items: center;
+				padding: 16px 32px;
+				background: var(--cyan);
+				color: var(--bg);
+				font-size: 16px;
+				font-weight: 600;
+				letter-spacing: -0.005em;
+				text-decoration: none;
+				border-radius: 999px;
+				transition: filter 0.15s ease;
+			}
+
+			.btn-primary:hover {
+				filter: brightness(1.08);
+			}
+
+			.btn-outline {
+				display: inline-flex;
+				align-items: center;
+				padding: 16px 32px;
+				border: 1px solid var(--border-subtle);
+				color: var(--text);
+				font-size: 16px;
+				font-weight: 600;
+				letter-spacing: -0.005em;
+				text-decoration: none;
+				border-radius: 999px;
+				transition: border-color 0.15s ease;
+			}
+
+			.btn-outline:hover {
+				border-color: var(--muted);
+			}
+
+			.button-row {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 14px;
+			}
+
+			/* Raised surface. Dark takes its depth from this, not shadow. */
+
+			.card {
+				background: var(--card);
+				border: 1px solid var(--border-subtle);
+				border-radius: 8px;
+				transition:
+					border-color 0.2s ease,
+					background-color 0.2s ease;
+			}
+
+			/* An out-arrow marks a link that leaves the site. */
+
+			.ext {
+				display: inline-flex;
+				align-items: center;
+				gap: 6px;
+				color: var(--cyan);
+				text-decoration: none;
+			}
+
+			.ext:hover {
+				text-decoration: underline;
+				text-underline-offset: 4px;
+			}
+
+			.ext::after {
+				content: '↗';
+				font-size: 12px;
+			}
+
+			@media (max-width: 560px) {
+				.page {
+					padding: 56px 20px 80px;
+				}
+
+				.page-head {
+					margin-bottom: 40px;
+				}
+
+				.btn-primary,
+				.btn-outline {
+					padding: 15px 22px;
+					font-size: 15px;
+				}
 			}
 
 			/* Site navigation */
