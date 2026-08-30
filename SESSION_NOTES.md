@@ -2,29 +2,26 @@
 
 ## Current position
 
-Stage: 5b (theme system, dark and light)
-Status: Code complete, verified locally (Playwright, both themes, both viewports), and pushed to `origin/main` (`dd102d0`). Deployment is via Vercel's GitHub integration, not confirmed from this environment — the stage's live-site VERIFY items (CSP re-scan on securityheaders.com, OS-level light/dark check on the deployed site) still need checking once the push has actually redeployed.
+Stage: 7 (all remaining content pages), closed out
+Status: Stages 6 and 7 both complete and now pushed to `origin/main` (`fe099c2`). All 9 pages exist (home, about, projects, certifications, blog, contact, cv, 404, plus the shared layout) and build cleanly. This header had been stuck at "Stage 5b" through all of Stage 6 and 7 despite the Log table below being kept current the whole time — same staleness failure mode as before, now fixed again. Read the Log rows for 2026-08-29/30 (Stage 6 and 7) for the real detail; do not trust a summary of them from memory, re-read the file.
 Blocked: none
 
-Stage plan lives outside this repository at `/Users/hyperdev/Documents/hypdev-website/` (numbered `NN-stage-N.md` files). This file previously tracked only Stage 1 and never caught up as Stages 2–5 were completed — the entries below for Stages 2–5 are reconstructed retroactively from git history in this session, not logged at the time. Treat their detail level as lower-confidence than a stage logged as it happened.
+Stage plan lives outside this repository at `/Users/hyperdev/Documents/hypdev-website/` (numbered `NN-stage-N.md` files).
 
 ## In progress
 
-- `social.github` in `src/config/site.ts` is marked TODO; the GitHub profile does not exist yet.
-- `src/components/Avatar.astro` and `public/images/avatar.png` exist (true-color cropped headshot, cyan-bordered circular frame) but are not wired into any page — built ahead of schedule at the user's request; the About page itself belongs to a later stage.
-- `src/layouts/BaseLayout.astro` now has a full light/dark theme system (tokens, anti-flash script, toggle button) but no real page uses it yet — `src/pages/index.astro` is still the untouched Astro scaffold. The theme system has only been exercised through temporary verification pages created and deleted during this session.
-- Vendor icons in `public/icons` were confirmed to render correctly against the light background, but 11 of the 14 use `fill="currentColor"` and must be inlined as SVG markup (not referenced via `<img src>`) wherever the certifications/tech-stack section ends up being built, or they render solid black in both themes instead of adapting.
-- The terminal-window hero element (`CONTENT.md` home-page section 2) does not exist yet; when built, its colours must be hardcoded and excluded from the `[data-theme]` scoping, not drawn from the shared tokens.
-- Stage 2's explicit `vercel.json` `framework`/`buildCommand`/`outputDirectory` block was never committed. `vercel.json` first appears in the Stage 3 commit containing only security headers, so Vercel has been relying on auto-detection this whole time rather than the explicit config the stage plan calls for.
-- Vercel project import, the `hypdev.cloud` custom domain, DNS records, and SSL issuance are not visible from local repository state and have never been confirmed in these notes one way or the other.
-- GitHub branch protection on `main` (a Stage 4 manual step) has never been confirmed in these notes; the `gh` CLI isn't installed in this environment so it couldn't be checked this session either.
+- `public/my_picture.PNG` (5.3MB, untracked) and `src/pages/theme-test.astro` (untracked scratch page) both remain deliberately uncommitted — confirmed still excluded after the Stage 7 push.
+- Deployment/DNS/SSL for `hypdev.cloud` and GitHub branch protection have still never been confirmed from any environment this project has run in — carried forward unresolved since Stage 2.
+- Vercel's live GitHub-figures route (`api/github.js`) cannot be exercised under `astro dev` (no `/api` support there) — needs `vercel dev` or an actual preview deploy to verify.
+- `social.github` now points to `https://github.com/iamhyp` (read from this repo's own git remote) — confirm that's the intended account.
+- A Diploma of Engineering from Kwara State Polytechnic appears on the CV PDF but was deliberately left out of the About page sidebar to keep one source of truth; recorded as a decision in CONTENT.md, not an oversight.
 
 ## Next step
 
-1. Confirm Vercel actually redeployed from the push (`dd102d0`) and re-scan securityheaders.com / Mozilla Observatory — the new `script-src` hash is the most likely thing to regress a grade.
-2. Reconcile the Stage 2 gaps above: either add the explicit `vercel.json` framework/build/output block or consciously confirm auto-detection is sufficient; confirm the Vercel project, custom domain, DNS, and SSL are actually live.
-3. Confirm branch protection on GitHub.
-4. Proceed to `/Users/hyperdev/Documents/hypdev-website/10-stage-6.md` (the current stage-6 file — note there is also an older `09-stage-6.md` in that directory; `10-stage-6.md` has the later timestamp and is what `09-stage-5b.md` itself names as "Next").
+1. Confirm the Vercel production deploy picked up this push (it's the first time `api/github.js` runs for real) and that the live GitHub-figures strip actually appears.
+2. Re-scan securityheaders.com / Mozilla Observatory against the live site — the CSP has changed materially since it was last checked.
+3. Resolve the carried-forward Stage 2/4 gaps: Vercel custom domain + DNS + SSL, and GitHub branch protection on `main`.
+4. Proceed to `/Users/hyperdev/Documents/hypdev-website/12-stage-8.md`.
 
 ## Log
 
