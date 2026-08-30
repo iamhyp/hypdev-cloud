@@ -366,25 +366,22 @@ What is left is skin, hair and a white shirt, which
 is a more restrained palette than the rest of the
 page and does not fight the cyan.
 
-Source is source-photos/hypdev_about_portrait_clean_03.png,
-the wider studio frame on the dark backdrop. It was
-chosen over the tighter variant because it carries
-more torso, and the torso is what the base fade
-dissolves into. Background removed with rembg using
-the u2net_human_seg model and alpha matting. This
-one needs a real segmenter: the backdrop is dark
-grey and the hair is near-black, so the flood-fill
-approach used on the white-background frames cannot
-separate them.
+Source is source-photos/photo_update.svg, which is
+not a vector: it is the IMG_1300 studio frame with a
+matte made in an external tool, wrapped in SVG at
+2857x3499. Two dark-backdrop frames were tried and
+rejected. They carry more torso, which the base fade
+would have liked, but they arrived at roughly 1000px
+and this source is nearly three times that on the
+long edge, which matters more for a portrait that is
+the first thing on the page. Extract the two embedded
+rasters and use the greyscale one as alpha.
 
-Geometry. The source gives only 52px above the crown,
-so 66 transparent rows are padded on top before
-cropping, which puts the head top at about 11 percent.
-Crop is 720x1014 from the padded frame, centred on
-x=510, exported 780x1098. It lands
-inside the elbows on purpose: a wider crop puts the
-forearms where the base fade cuts through them and
-leaves two dark wedges in the bottom corners.
+Geometry. Crop 0.78 aspect, full height, horizontally
+centred, exported 780x1000. Headroom above the crown
+is only about six percent because the source is a
+chest-up crop. That is tight but it holds, and the
+base fade covers the lower edge.
 
 The one grading rule that matters. The shirt must
 never reach paper white, or it dissolves into the
