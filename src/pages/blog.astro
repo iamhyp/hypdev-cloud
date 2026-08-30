@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="Blog, Lawal Alabe"
+	description="Writeups on cloud security architecture, infrastructure as code, and Kubernetes platform hardening."
+>
+	<div class="page">
+		<header class="page-head">
+			<h1 class="page-title">Blog</h1>
+		</header>
+
+		<p class="empty">Posts appear here as projects complete.</p>
+	</div>
+</BaseLayout>
+
+<style>
+	.empty {
+		max-width: 620px;
+		margin: 0;
+		padding: 40px 0 0;
+		border-top: 1px solid var(--border-faint);
+		font-size: 17px;
+		line-height: 1.75;
+		text-wrap: pretty;
+		color: var(--muted);
+	}
+</style>
