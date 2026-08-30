@@ -54,7 +54,7 @@ const paragraphs = [
 				src="/images/portrait.webp"
 				alt="Lawal Alabe"
 				width="780"
-				height="1000"
+				height="1098"
 				fetchpriority="high"
 			/>
 		</header>
@@ -146,12 +146,14 @@ const paragraphs = [
 	}
 
 	/*
-	 * Graded for the dark page. On the light theme the same file would
-	 * float as a grey shape, so it takes a little contrast and a touch of
-	 * warmth back to sit on cream.
+	 * The portrait is colour, so no tint correction here. The earlier
+	 * sepia existed to warm a monochrome grade and would now sit on top
+	 * of real skin tone. All the light theme needs is a fractional
+	 * darkening, because the shirt is the lightest thing in the picture
+	 * and the page ground behind it is already near-white.
 	 */
 	:root[data-theme='light'] .portrait {
-		filter: contrast(1.08) brightness(0.94) sepia(0.06);
+		filter: contrast(1.03) brightness(0.97);
 	}
 
 	.about-layout {

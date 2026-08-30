@@ -349,44 +349,65 @@ Heading: About
 
 A cut-out portrait leads the page, beside the
 heading and the first paragraph. Held at
-public/images/portrait.webp: the studio background
-is removed and the image is graded to the palette,
-because a colour photograph on this ground reads as
-a sticker rather than part of the page. Its base
-fades out rather than ending on a cut line.
+public/images/portrait.webp, 780x1000.
 
-Source is the 5472x3648 studio frame supplied on
-2026-08-30, not the earlier passport-style crop.
-It has real headroom, a full torso and a pure white
-sweep, so the crop is a decision rather than a
-rescue. Current crop is 2100x2692 from the original,
-centred on x=2760 with the top edge at y=506, which
-is about eleven percent headroom above the crown,
-exported at 780x1000.
+It is in COLOUR, deliberately. It was monochrome
+first and that was wrong twice over. The grade
+clamped the white point to #b4bcc7, which is 73
+percent grey, so the brightest thing in the picture
+never approached white and the whole image collapsed
+into a narrow slate band. That is what washed it
+out. A duotone keeps the full range and tints only
+the ends. The second error was the reasoning: the
+objection to a colour photograph on a designed page
+is the rectangle of foreign colour, and there is no
+rectangle here because the background is cut away.
+What is left is skin, hair and a white shirt, which
+is a more restrained palette than the rest of the
+page and does not fight the cyan.
 
-The tone curve matters more than the matte. Flat
-autocontrast puts the white shirt at the top of the
-range and the face reads as a dark hole beside it;
-the curve lifts the face into the focal band and
-puts a knee on the shirt so it stops climbing.
-Control points, on a 0-255 greyscale before the
-colorize step:
+Source is source-photos/hypdev_about_portrait_clean_03.png,
+the wider studio frame on the dark backdrop. It was
+chosen over the tighter variant because it carries
+more torso, and the torso is what the base fade
+dissolves into. Background removed with rembg using
+the u2net_human_seg model and alpha matting. This
+one needs a real segmenter: the backdrop is dark
+grey and the hair is near-black, so the flood-fill
+approach used on the white-background frames cannot
+separate them.
 
-    in   0  27  60 114 150 204 230 255
-    out  6  22  70 160 190 212 224 232
+Geometry. The source gives only 52px above the crown,
+so 66 transparent rows are padded on top before
+cropping, which puts the head top at about 11 percent.
+Crop is 720x1014 from the padded frame, centred on
+x=510, exported 780x1098. It lands
+inside the elbows on purpose: a wider crop puts the
+forearms where the base fade cuts through them and
+leaves two dark wedges in the bottom corners.
 
-Then colorize black #0b0d11, mid #6b7481, white
-#b4bcc7.
+The one grading rule that matters. The shirt must
+never reach paper white, or it dissolves into the
+light theme's near-white ground and leaves a floating
+head. Highlight knee, applied to all three channels
+on a 0-255 scale:
 
-Crop width is deliberately inside the elbows. A
-wider crop keeps both forearms, and where the base
-fade cuts through them they leave two dark wedges in
-the bottom corners. Narrower, the shirt fades out as
-one field.
+    in   0  60 120 180 215 255
+    out  4  58 124 184 212 234
 
-Originals live in source-photos/, which is
-gitignored and never served. Do not put a
-multi-megabyte camera file in public/.
+Then saturation 0.88 and contrast 1.06. Measured
+result: shirt at the 98th percentile is 226, safely
+below paper white. Any regrade should check that
+number first.
+
+The light theme takes only filter: contrast(1.03)
+brightness(0.97). There is no sepia any more; that
+existed to warm a monochrome grade and would now sit
+on top of real skin tone.
+
+Originals live in source-photos/, which is gitignored
+and never served. Do not put a multi-megabyte camera
+file in public/.
 
 ---
 
