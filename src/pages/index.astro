@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import siteConfig from '../config/site';
+import { skillGroups } from '../config/skills';
 
 const subtitleItems = ['Infrastructure as Code', 'Kubernetes', 'Cloud Security', 'Applied AI'];
 
@@ -81,13 +82,14 @@ const commands: CliCommand[] = [
 	},
 	{
 		name: 'stack',
-		summary: 'platforms and tooling I run in production',
-		lines: [
-			{ key: 'cloud', text: 'AWS, Azure' },
-			{ key: 'infra', text: 'Terraform, Kubernetes, Docker' },
-			{ key: 'ci/cd', text: 'Jenkins, GitHub Actions, ArgoCD, Ansible' },
-			{ key: 'languages', text: 'Python, C++, Bash, PowerShell' },
-		],
+		summary: 'the full technical skills list',
+		// Flattened from src/config/skills.ts, the same source the CV
+		// page reads, so the shell cannot claim a tool the CV does not.
+		lines: skillGroups.flatMap((group, i): CliLine[] => [
+			...(i > 0 ? [{ text: '' }] : []),
+			{ text: group.heading, tone: 'accent' as const },
+			...group.rows.map((row) => ({ key: row.key, text: row.value })),
+		]),
 	},
 	{
 		name: 'certs',
@@ -140,29 +142,29 @@ const techColumns = [
 	{
 		heading: 'CLOUD & INFRA',
 		tools: [
-			{ name: 'AWS', icon: loadIcon('aws') },
-			{ name: 'Azure', icon: loadIcon('azure') },
-			{ name: 'Terraform', icon: loadIcon('terraform'), color: '#7b42bc' },
-			{ name: 'Kubernetes', icon: loadIcon('kubernetes'), color: '#326ce5' },
-			{ name: 'Docker', icon: loadIcon('docker'), color: '#2496ed' },
+			{ name: 'AWS', icon: loadIcon('aws'), slug: 'aws' },
+			{ name: 'Azure', icon: loadIcon('azure'), slug: 'azure' },
+			{ name: 'Terraform', icon: loadIcon('terraform'), slug: 'terraform' },
+			{ name: 'Kubernetes', icon: loadIcon('kubernetes'), slug: 'kubernetes' },
+			{ name: 'Docker', icon: loadIcon('docker'), slug: 'docker' },
 		],
 	},
 	{
 		heading: 'CI/CD & AUTOMATION',
 		tools: [
-			{ name: 'Jenkins', icon: loadIcon('jenkins'), color: '#d24939' },
-			{ name: 'GitHub Actions', icon: loadIcon('github'), color: 'var(--text)' },
-			{ name: 'ArgoCD', icon: loadIcon('argocd'), color: '#ef7b4d' },
-			{ name: 'Ansible', icon: loadIcon('ansible'), color: '#ee0000' },
+			{ name: 'Jenkins', icon: loadIcon('jenkins'), slug: 'jenkins' },
+			{ name: 'GitHub Actions', icon: loadIcon('github'), slug: 'github' },
+			{ name: 'ArgoCD', icon: loadIcon('argocd'), slug: 'argocd' },
+			{ name: 'Ansible', icon: loadIcon('ansible'), slug: 'ansible' },
 		],
 	},
 	{
 		heading: 'LANGUAGES & DEV',
 		tools: [
-			{ name: 'Python', icon: loadIcon('python'), color: '#3776ab' },
-			{ name: 'C++', icon: loadIcon('cplusplus'), color: '#00599c' },
-			{ name: 'Bash', icon: loadIcon('bash'), color: '#4eaa25' },
-			{ name: 'PowerShell', icon: loadIcon('powershell'), color: '#5391fe' },
+			{ name: 'Python', icon: loadIcon('python'), slug: 'python' },
+			{ name: 'C++', icon: loadIcon('cplusplus'), slug: 'cplusplus' },
+			{ name: 'Bash', icon: loadIcon('bash'), slug: 'bash' },
+			{ name: 'PowerShell', icon: loadIcon('powershell'), slug: 'powershell' },
 		],
 	},
 ];
@@ -405,7 +407,7 @@ const techColumns = [
 								<div class="tech-tile">
 									<span
 										class="tile-icon"
-										style={tool.color ? `color: ${tool.color};` : undefined}
+										data-tool={tool.slug}
 										aria-hidden="true"
 										set:html={tool.icon}
 									/>
@@ -1013,9 +1015,12 @@ const techColumns = [
 		color: var(--term-red);
 	}
 
+	/*
+	 * One key column width for every command, so output from different
+	 * commands lines up in the same gutter the way a shell's would.
+	 */
 	.cli-key {
-		flex: 0 0 auto;
-		min-width: 86px;
+		flex: 0 0 152px;
 		color: var(--term-green);
 	}
 
@@ -1151,8 +1156,19 @@ const techColumns = [
 			font-size: 13px;
 		}
 
+		.cli-line,
+		.cli-echo {
+			flex-direction: column;
+			gap: 2px;
+		}
+
 		.cli-key {
-			min-width: 68px;
+			flex: none;
+		}
+
+		.cli-echo {
+			flex-direction: row;
+			gap: 10px;
 		}
 	}
 
@@ -1180,6 +1196,22 @@ const techColumns = [
 	 * The strip is hidden until real values arrive, so a failed request
 	 * or a rate limit shows nothing rather than zeroes.
 	 */
+	/*
+	 * The strip ships with the hidden attribute and is revealed only
+	 * once real figures arrive. That guarantee was broken: `hidden`
+	 * comes from the user agent stylesheet, and any author rule setting
+	 * display outranks it, so `display: flex` here was overriding it and
+	 * the row rendered with empty values until the fetch resolved. An
+	 * attribute selector on the same element restores the intent.
+	 *
+	 * Deliberately not a global `[hidden] { display: none !important }`:
+	 * the desktop navigation relies on overriding `hidden` to keep the
+	 * menu visible, and that rule would break it.
+	 */
+	.live[hidden] {
+		display: none;
+	}
+
 	.live {
 		display: flex;
 		flex-wrap: wrap;
@@ -1456,6 +1488,57 @@ const techColumns = [
 		height: 34px;
 		opacity: 1;
 		transition: transform 0.18s cubic-bezier(0.22, 0.61, 0.36, 1);
+	}
+
+	/*
+	 * Brand colours live here rather than in a style attribute. The site
+	 * ships a strict style-src with no unsafe-inline, which blocks
+	 * inline style attributes outright: every one of these was being
+	 * dropped in production while looking correct in dev, because the
+	 * dev server sends no CSP. AWS and Azure carry their own fills.
+	 */
+	.tile-icon[data-tool='terraform'] {
+		color: #7b42bc;
+	}
+
+	.tile-icon[data-tool='kubernetes'] {
+		color: #326ce5;
+	}
+
+	.tile-icon[data-tool='docker'] {
+		color: #2496ed;
+	}
+
+	.tile-icon[data-tool='jenkins'] {
+		color: #d24939;
+	}
+
+	.tile-icon[data-tool='github'] {
+		color: var(--text);
+	}
+
+	.tile-icon[data-tool='argocd'] {
+		color: #ef7b4d;
+	}
+
+	.tile-icon[data-tool='ansible'] {
+		color: #ee0000;
+	}
+
+	.tile-icon[data-tool='python'] {
+		color: #3776ab;
+	}
+
+	.tile-icon[data-tool='cplusplus'] {
+		color: #00599c;
+	}
+
+	.tile-icon[data-tool='bash'] {
+		color: #4eaa25;
+	}
+
+	.tile-icon[data-tool='powershell'] {
+		color: #5391fe;
 	}
 
 	.tile-icon :global(svg) {

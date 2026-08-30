@@ -144,11 +144,12 @@ I build secure platforms and harden cloud-native
 infrastructure at scale.
 
 ### stack
-Summary: platforms and tooling I run in production
-cloud      AWS, Azure
-infra      Terraform, Kubernetes, Docker
-ci/cd      Jenkins, GitHub Actions, ArgoCD, Ansible
-languages  Python, C++, Bash, PowerShell
+Summary: the full technical skills list
+Prints every group in the CV technical skills
+section below, including security, networking and
+compliance. Both this command and the CV page read
+src/config/skills.ts, so neither can claim a tool the
+other does not.
 
 ### certs
 Summary: credentials, each verifiable
@@ -771,15 +772,25 @@ Dates: June 2019 to June 2020
 
 ## CV technical skills
 
-Grouped as on the PDF. The home page tech stack is a
-shorter, curated view of the same thing; this is the
-full list.
+Held in src/config/skills.ts and read by both the CV
+page and the shell's stack command. The home page
+tech stack tiles are a shorter, curated view of the
+same ground.
+
+Microsoft 365 administration (M365 Admin, Intune,
+Purview) was removed on 2026-08-30 at the owner's
+direction. Azure infrastructure and Defender stay:
+platform and security work rather than workplace
+administration. Note that the CV experience section
+still records Microsoft 365 administration under the
+2019 to 2020 role, which is history rather than a
+claim about current focus.
 
 Cloud and infrastructure
 AWS: VPC, EC2, S3, RDS, Lambda, ECS, EKS,
 CloudWatch, GuardDuty, CloudTrail, WAF
-Microsoft Cloud: Azure VNet, Azure Monitor, Azure
-Proxy, Intune, M365 Admin, Purview, Defender
+Azure: Azure VNet, Azure Monitor, Azure Proxy,
+Defender
 Infrastructure as code and DevOps: Terraform,
 CloudFormation, Ansible, CI/CD (GitHub Actions, AWS
 CodePipeline)
