@@ -1,0 +1,263 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteConfig from '../config/site';
+
+/*
+ * Education lives here rather than in site.ts because it is prose the
+ * About page owns, not a site-wide value reused elsewhere. The CV page
+ * imports this array so there is still one source of truth for it.
+ */
+export const education = [
+	{
+		degree: 'MSc Cyber Security Engineering',
+		institution: 'University of Technology Sydney',
+		badge: 'Excellence Scholarship',
+	},
+	{
+		degree: 'MSc AI Convergence Engineering',
+		institution: 'Pukyong National University',
+		badge: 'Korean Govt Scholarship',
+	},
+	{
+		degree: 'BEng Electrical and Electronic Engineering',
+		institution: 'Kwara State University',
+		badge: null,
+	},
+];
+
+const paragraphs = [
+	'I am a Platform Security Engineer working at the intersection of infrastructure as code, Kubernetes security, and applied AI. My focus is building platforms that are secure by design across cloud providers.',
+	'My background started in electrical and electronic engineering, moved through embedded systems research and published work in industrial AI anomaly detection, and has settled in cloud security engineering. That path gives me a systems-level view I find useful when thinking about how things break and how to harden them.',
+	'I completed two funded postgraduate degrees, in AI Convergence Engineering from Pukyong National University, and in Cyber Security Engineering from the University of Technology Sydney. The research I did during those years shapes how I approach detection and monitoring work today.',
+];
+---
+
+<BaseLayout
+	title="About, Lawal Alabe"
+	description="Platform Security Engineer with two funded postgraduate degrees in AI Convergence Engineering and Cyber Security Engineering."
+>
+	<div class="page">
+		<header class="page-head">
+			<h1 class="page-title">About</h1>
+		</header>
+
+		<div class="about-layout">
+			<aside class="about-sidebar">
+				{/*
+				  A monogram rather than a photograph. The name is the
+				  brand mark on this site, so the avatar echoes it.
+				*/}
+				<p class="avatar" aria-hidden="true">L</p>
+
+				<h2 class="sidebar-heading">Education</h2>
+				<ul class="education">
+					{
+						education.map((entry) => (
+							<li class="education-entry">
+								<h3 class="education-degree">{entry.degree}</h3>
+								<p class="education-institution">{entry.institution}</p>
+								{entry.badge && <p class="education-badge">{entry.badge}</p>}
+							</li>
+						))
+					}
+				</ul>
+			</aside>
+
+			<div class="about-main">
+				{paragraphs.map((text) => <p class="about-paragraph">{text}</p>)}
+
+				<h2 class="section-title publications-heading">Selected publications</h2>
+				<ol class="publications">
+					{
+						siteConfig.publications.map((paper, i) => (
+							<li class="publication">
+								<span class="publication-index" aria-hidden="true">
+									{String(i + 1).padStart(2, '0')}
+								</span>
+								<div>
+									<h3 class="publication-title">
+										<a
+											class="publication-link"
+											href={paper.url}
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											{paper.title}
+										</a>
+									</h3>
+									<p class="publication-journal">{paper.journal}</p>
+								</div>
+							</li>
+						))
+					}
+				</ol>
+			</div>
+		</div>
+	</div>
+</BaseLayout>
+
+<style>
+	.about-layout {
+		display: grid;
+		grid-template-columns: 240px minmax(0, 1fr);
+		gap: 56px;
+		align-items: start;
+	}
+
+	.about-sidebar {
+		padding-right: 40px;
+		border-right: 1px solid var(--border-faint);
+	}
+
+	.avatar {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 64px;
+		height: 64px;
+		margin: 0 0 40px;
+		border: 1px solid var(--cyan-border);
+		border-radius: 50%;
+		background: var(--cyan-dim);
+		font-size: 26px;
+		font-weight: 700;
+		letter-spacing: -0.03em;
+		color: var(--cyan);
+	}
+
+	.sidebar-heading {
+		margin: 0 0 22px;
+		font-size: 13px;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--cyan);
+	}
+
+	.education {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.education-entry {
+		padding-left: 18px;
+		border-left: 1px solid var(--border-subtle);
+	}
+
+	.education-entry + .education-entry {
+		margin-top: 28px;
+	}
+
+	.education-degree {
+		margin: 0 0 6px;
+		font-size: 15px;
+		font-weight: 600;
+		line-height: 1.45;
+		letter-spacing: -0.02em;
+		text-wrap: balance;
+		color: var(--text);
+	}
+
+	.education-institution {
+		margin: 0;
+		font-size: 14px;
+		line-height: 1.5;
+		color: var(--muted);
+	}
+
+	.education-badge {
+		display: inline-block;
+		margin: 12px 0 0;
+		padding: 5px 12px;
+		border: 1px solid var(--cyan-border);
+		border-radius: 999px;
+		background: var(--cyan-dim);
+		font-size: 12px;
+		font-weight: 600;
+		color: var(--cyan);
+	}
+
+	.about-paragraph {
+		margin: 0 0 26px;
+		max-width: 660px;
+		font-size: 17px;
+		line-height: 1.85;
+		text-wrap: pretty;
+		color: var(--muted);
+	}
+
+	.publications-heading {
+		margin-top: 72px;
+		font-size: clamp(24px, 2.6vw, 30px);
+	}
+
+	.publications {
+		margin: 36px 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.publication {
+		display: flex;
+		gap: 20px;
+		padding: 26px 0;
+		border-top: 1px solid var(--border-faint);
+	}
+
+	.publication:last-child {
+		border-bottom: 1px solid var(--border-faint);
+	}
+
+	.publication-index {
+		flex: 0 0 auto;
+		padding-top: 3px;
+		font-size: 14px;
+		font-weight: 600;
+		font-variant-numeric: tabular-nums;
+		color: var(--faint);
+	}
+
+	.publication-title {
+		margin: 0 0 8px;
+		font-size: 16.5px;
+		font-weight: 600;
+		line-height: 1.55;
+		letter-spacing: -0.02em;
+		text-wrap: pretty;
+	}
+
+	.publication-link {
+		color: var(--text);
+		text-decoration: none;
+	}
+
+	.publication-link:hover {
+		text-decoration: underline;
+		text-underline-offset: 4px;
+	}
+
+	.publication-journal {
+		margin: 0;
+		font-size: 14.5px;
+		color: var(--cyan);
+	}
+
+	@media (max-width: 860px) {
+		.about-layout {
+			grid-template-columns: 1fr;
+			gap: 48px;
+		}
+
+		.about-sidebar {
+			padding-right: 0;
+			padding-bottom: 44px;
+			border-right: none;
+			border-bottom: 1px solid var(--border-faint);
+		}
+
+		.publications-heading {
+			margin-top: 56px;
+		}
+	}
+</style>
