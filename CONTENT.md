@@ -355,11 +355,38 @@ because a colour photograph on this ground reads as
 a sticker rather than part of the page. Its base
 fades out rather than ending on a cut line.
 
+Source is the 5472x3648 studio frame supplied on
+2026-08-30, not the earlier passport-style crop.
+It has real headroom, a full torso and a pure white
+sweep, so the crop is a decision rather than a
+rescue. Current crop is 2100x2692 from the original,
+centred on x=2760 with the top edge at y=506, which
+is about eleven percent headroom above the crown,
+exported at 780x1000.
+
+The tone curve matters more than the matte. Flat
+autocontrast puts the white shirt at the top of the
+range and the face reads as a dark hole beside it;
+the curve lifts the face into the focal band and
+puts a knee on the shirt so it stops climbing.
+Control points, on a 0-255 greyscale before the
+colorize step:
+
+    in   0  27  60 114 150 204 230 255
+    out  6  22  70 160 190 212 224 232
+
+Then colorize black #0b0d11, mid #6b7481, white
+#b4bcc7.
+
+Crop width is deliberately inside the elbows. A
+wider crop keeps both forearms, and where the base
+fade cuts through them they leave two dark wedges in
+the bottom corners. Narrower, the shirt fades out as
+one field.
+
 Originals live in source-photos/, which is
-gitignored and never served. Regenerate the
-derivative from IMG_1300.PNG if the crop or grade
-needs to change; do not put a multi-megabyte camera
-file in public/.
+gitignored and never served. Do not put a
+multi-megabyte camera file in public/.
 
 ---
 
