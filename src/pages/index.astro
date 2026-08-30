@@ -75,7 +75,7 @@ const commands: CliCommand[] = [
 		lines: [
 			{ text: siteConfig.author.name, tone: 'accent' },
 			{ text: siteConfig.author.role },
-			{ text: `${siteConfig.author.location} · available remote`, tone: 'muted' },
+			{ text: siteConfig.author.location, tone: 'muted' },
 			{ text: '' },
 			{ text: 'I build secure platforms and harden cloud-native infrastructure at scale.' },
 		],
@@ -193,7 +193,7 @@ const techColumns = [
 				}
 			</p>
 
-			<p class="hero-location">Australia · Remote</p>
+			<p class="hero-location">{siteConfig.author.location}</p>
 
 			<p class="hero-paragraph">
 				I build secure platforms and harden cloud-native infrastructure at scale. My work sits

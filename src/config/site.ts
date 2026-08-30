@@ -50,7 +50,12 @@ export const siteConfig: SiteConfig = {
 	author: {
 		name: 'Lawal Alabe',
 		role: 'Platform Security Engineer / DevSecOps',
-		location: 'Sydney, Australia',
+		// The location line exactly as it is displayed. The hero, the CV
+		// page and the shell's whoami all read this one value, because
+		// they previously held three different hardcoded phrasings.
+		// Sydney is not dropped: it is in the meta description on every
+		// page, which is where a search engine reads it from.
+		location: 'Australia · Remote',
 	},
 	social: {
 		linkedin: 'https://www.linkedin.com/in/lawal-alabe-546873125/',
