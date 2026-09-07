@@ -16,9 +16,9 @@ accidentally committed secrets with `npm run scan` (gitleaks).
 
 ## Headers
 
-Security headers — Content-Security-Policy, Strict-Transport-Security,
+Security headers Content-Security-Policy, Strict-Transport-Security,
 X-Content-Type-Options, X-Frame-Options, Referrer-Policy, and
-Permissions-Policy — are enforced at the edge via `vercel.json` on
+Permissions-Policy are enforced at the edge via `vercel.json` on
 every route.
 
 ## Reporting an issue
