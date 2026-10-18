@@ -1,0 +1,387 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import siteConfig from '../../config/site';
+
+export async function getStaticPaths() {
+	/*
+	 * Drafts build in development so they can be previewed at their real
+	 * URL, and are filtered out of production entirely. Filtering at the
+	 * route means a draft has no page to find, not merely no link to it.
+	 */
+	const posts = await getCollection('blog', ({ data }) => import.meta.env.DEV || !data.draft);
+
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: { post },
+	}));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, description, pubDate, tags, ogImage, readingTime, series } = post.data;
+
+const published = pubDate.toLocaleDateString('en-AU', {
+	day: 'numeric',
+	month: 'long',
+	year: 'numeric',
+});
+const isoDate = pubDate.toISOString().slice(0, 10);
+---
+
+<BaseLayout
+	title={`${title}, ${siteConfig.author.name}`}
+	description={description}
+	ogImage={ogImage}
+	ogImageAlt={title}
+	ogType="article"
+	publishedTime={pubDate}
+>
+	<div class="page">
+		<article class="post">
+			<header class="post-head">
+				{series && <p class="post-series">{series}</p>}
+				<h1 class="post-title">{title}</h1>
+				<p class="post-meta">
+					<time datetime={isoDate}>{published}</time>
+					{readingTime && <span class="post-dot" aria-hidden="true">·</span>}
+					{readingTime && <span>{readingTime}</span>}
+				</p>
+			</header>
+
+			<div class="prose">
+				<Content />
+			</div>
+
+			{
+				tags.length > 0 && (
+					<footer class="post-foot">
+						<h2 class="post-foot-label">Tags</h2>
+						<ul class="post-tags">
+							{tags.map((tag) => (
+								<li class="post-tag">{tag}</li>
+							))}
+						</ul>
+					</footer>
+				)
+			}
+
+			<p class="post-back">
+				<a href="/blog/">Back to all posts</a>
+			</p>
+		</article>
+	</div>
+</BaseLayout>
+
+<script is:inline defer src="/scripts/post-media.js"></script>
+
+<style>
+	/*
+	 * The post sits on the same left axis as every other page rather
+	 * than centred, because the rest of the site aligns left and a
+	 * centred column here would read as a different website.
+	 *
+	 * Prose is capped at 720px, about 68 characters at this size, which
+	 * is the top of the comfortable range. Media is allowed past it to
+	 * 940px: a 1200x675 terminal recording squeezed into a text column
+	 * is unreadable, and the whole point of it is to be watched.
+	 */
+	.post {
+		max-width: 940px;
+	}
+
+	.post-head {
+		margin: 0 0 48px;
+	}
+
+	.post-series {
+		margin: 0 0 16px;
+		font-size: 13px;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--cyan);
+	}
+
+	.post-title {
+		margin: 0;
+		max-width: 880px;
+		font-size: clamp(30px, 3.8vw, 46px);
+		font-weight: 700;
+		line-height: 1.1;
+		letter-spacing: -0.035em;
+		text-wrap: balance;
+		color: var(--text);
+	}
+
+	.post-meta {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin: 20px 0 0;
+		font-size: 14px;
+		color: var(--faint);
+	}
+
+	.post-dot {
+		color: var(--border-subtle);
+	}
+
+	/* Long-form body copy. */
+
+	.prose {
+		max-width: 720px;
+		font-size: 17px;
+		line-height: 1.75;
+		color: var(--muted);
+	}
+
+	.prose :global(p) {
+		margin: 0 0 24px;
+		text-wrap: pretty;
+	}
+
+	.prose :global(h2) {
+		margin: 56px 0 20px;
+		font-size: 25px;
+		font-weight: 600;
+		line-height: 1.25;
+		letter-spacing: -0.02em;
+		text-wrap: balance;
+		color: var(--text);
+	}
+
+	.prose :global(h3) {
+		margin: 40px 0 16px;
+		font-size: 19px;
+		font-weight: 600;
+		color: var(--text);
+	}
+
+	.prose :global(strong) {
+		font-weight: 600;
+		color: var(--text);
+	}
+
+	.prose :global(a) {
+		color: var(--cyan);
+		text-decoration: underline;
+		text-underline-offset: 4px;
+		text-decoration-thickness: 1px;
+		/*
+		 * Target size, WCAG 2.2 criterion 2.5.8. A prose link renders
+		 * about 19px tall, under the 24px minimum. These sit inline in a
+		 * sentence, which the criterion exempts, but the rest of the
+		 * site pads its small links to clear it anyway and an automated
+		 * check cannot see the exemption. Vertical padding on an inline
+		 * element does not affect line height, so nothing moves.
+		 */
+		padding-block: 6px;
+	}
+
+	.prose :global(a:hover) {
+		text-decoration-thickness: 2px;
+	}
+
+	.prose :global(ul),
+	.prose :global(ol) {
+		margin: 0 0 24px;
+		padding-left: 22px;
+	}
+
+	.prose :global(li) {
+		margin: 0 0 8px;
+	}
+
+	.prose :global(hr) {
+		margin: 56px 0;
+		border: 0;
+		border-top: 1px solid var(--border-faint);
+	}
+
+	.prose :global(em) {
+		color: var(--faint);
+		font-style: normal;
+	}
+
+	/* Code. */
+
+	.prose :global(code) {
+		padding: 2px 6px;
+		border-radius: 4px;
+		background: var(--code-inline-bg);
+		font-size: 0.88em;
+		color: var(--text);
+	}
+
+	.prose :global(pre) {
+		margin: 0 0 24px;
+		padding: 20px 22px;
+		overflow-x: auto;
+		border: 1px solid var(--border-subtle);
+		border-radius: 8px;
+		background: var(--code-block-bg);
+		font-size: 14.5px;
+		line-height: 1.7;
+		/*
+		 * JetBrains Mono ligatures fuse a double hyphen into a long dash,
+		 * which turns a shell flag into something nobody could type. Off
+		 * for code, as it already is for the terminal on the home page.
+		 */
+		font-variant-ligatures: none;
+		font-feature-settings:
+			'liga' 0,
+			'calt' 0;
+	}
+
+	.prose :global(pre code) {
+		padding: 0;
+		border-radius: 0;
+		background: none;
+		font-size: inherit;
+	}
+
+	/*
+	 * Prism token colours, drawn from the site palette so code reads as
+	 * part of this site rather than as a pasted screenshot, and so both
+	 * themes work. Class based, which is the point: a style attribute
+	 * would be dropped by the Content-Security-Policy.
+	 */
+
+	.prose :global(.token.comment),
+	.prose :global(.token.prolog),
+	.prose :global(.token.doctype),
+	.prose :global(.token.cdata) {
+		color: var(--faint);
+	}
+
+	.prose :global(.token.punctuation),
+	.prose :global(.token.operator),
+	.prose :global(.token.entity) {
+		color: var(--muted);
+	}
+
+	.prose :global(.token.string),
+	.prose :global(.token.char),
+	.prose :global(.token.attr-value),
+	.prose :global(.token.inserted) {
+		color: var(--green-text);
+	}
+
+	.prose :global(.token.function),
+	.prose :global(.token.keyword),
+	.prose :global(.token.selector),
+	.prose :global(.token.builtin),
+	.prose :global(.token.class-name) {
+		color: var(--cyan);
+	}
+
+	.prose :global(.token.number),
+	.prose :global(.token.boolean),
+	.prose :global(.token.constant),
+	.prose :global(.token.symbol),
+	.prose :global(.token.variable),
+	.prose :global(.token.regex) {
+		color: var(--amber-text);
+	}
+
+	.prose :global(.token.deleted),
+	.prose :global(.token.important) {
+		color: var(--red-text);
+	}
+
+	/*
+	 * Figures. Adapted from the draft's suggested CSS to the site's
+	 * tokens rather than its hardcoded hexes, so both themes work and
+	 * the caption colour stays the one that passes contrast.
+	 */
+
+	.prose :global(.post-media) {
+		margin: 40px 0;
+	}
+
+	.prose :global(.post-media video),
+	.prose :global(.post-media img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		border: 1px solid var(--border-subtle);
+		border-radius: 12px;
+		background: var(--card);
+	}
+
+	.prose :global(.post-media figcaption) {
+		margin-top: 12px;
+		font-size: 13px;
+		line-height: 1.6;
+		text-align: center;
+		color: var(--faint);
+	}
+
+	/* Tags and the way back. */
+
+	.post-foot {
+		margin: 64px 0 0;
+		padding: 28px 0 0;
+		border-top: 1px solid var(--border-faint);
+	}
+
+	.post-foot-label {
+		margin: 0 0 14px;
+		font-size: 12px;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		color: var(--faint);
+	}
+
+	.post-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.post-tag {
+		padding: 6px 12px;
+		border: 1px solid var(--border-faint);
+		border-radius: 999px;
+		font-size: 13px;
+		color: var(--muted);
+	}
+
+	.post-back {
+		margin: 40px 0 0;
+		font-size: 15px;
+	}
+
+	.post-back a {
+		color: var(--cyan);
+		text-decoration: none;
+		padding-block: 6px;
+		display: inline-block;
+	}
+
+	.post-back a:hover {
+		text-decoration: underline;
+		text-underline-offset: 4px;
+	}
+
+	@media (max-width: 560px) {
+		.prose {
+			font-size: 16.5px;
+		}
+
+		.prose :global(h2) {
+			margin-top: 44px;
+			font-size: 22px;
+		}
+
+		.prose :global(pre) {
+			padding: 16px;
+			font-size: 13.5px;
+		}
+	}
+</style>
