@@ -77,21 +77,26 @@ const isoDate = pubDate.toISOString().slice(0, 10);
 
 <style>
 	/*
-	 * The post sits on the same left axis as every other page rather
-	 * than centred, because the rest of the site aligns left and a
-	 * centred column here would read as a different website.
+	 * The post is the one page on this site that leaves the left axis.
+	 * A long read is a different object from a list of projects: there
+	 * is no navigation or index running down one side to anchor it, so
+	 * a 940px column pinned to the left of a 1072px page reads as a
+	 * layout fault rather than a decision.
 	 *
-	 * Prose is capped at 720px, about 68 characters at this size, which
-	 * is the top of the comfortable range. Media is allowed past it to
-	 * 940px: a 1200x675 terminal recording squeezed into a text column
-	 * is unreadable, and the whole point of it is to be watched.
+	 * Inside the centred block nothing else is centred. Text stays at
+	 * 720px, about 70 characters in this face, and the heading, the
+	 * body and the footer all share one left axis. Only media fills the
+	 * 940px band, so a figure breaks out by 110px on each side instead
+	 * of hanging off one edge.
 	 */
 	.post {
 		max-width: 940px;
+		margin-inline: auto;
 	}
 
 	.post-head {
-		margin: 0 0 48px;
+		max-width: 720px;
+		margin: 0 auto 48px;
 	}
 
 	.post-series {
@@ -105,8 +110,7 @@ const isoDate = pubDate.toISOString().slice(0, 10);
 
 	.post-title {
 		margin: 0;
-		max-width: 880px;
-		font-size: clamp(30px, 3.8vw, 46px);
+		font-size: clamp(30px, 3.8vw, 42px);
 		font-weight: 700;
 		line-height: 1.1;
 		letter-spacing: -0.035em;
@@ -129,16 +133,44 @@ const isoDate = pubDate.toISOString().slice(0, 10);
 
 	/* Long-form body copy. */
 
+	/*
+	 * The prose container is the media band, 940px wide. Text is held
+	 * back to 720px by the rule below, about 68 characters. The split
+	 * is the point: a 1200px terminal recording rendered inside a text
+	 * measure comes out at 60 percent and its type stops being
+	 * readable, so figures get the whole band and body copy keeps its
+	 * line length.
+	 */
 	.prose {
-		max-width: 720px;
+		max-width: 940px;
 		font-size: 17px;
 		line-height: 1.75;
 		color: var(--muted);
 	}
 
+	.prose :global(p),
+	.prose :global(h2),
+	.prose :global(h3),
+	.prose :global(ul),
+	.prose :global(ol),
+	.prose :global(pre),
+	.prose :global(hr),
+	.prose :global(blockquote) {
+		max-width: 720px;
+	}
+
+	/*
+	 * Justified, with hyphenation on. Justified setting in a monospace
+	 * face is the hard case: every space has the same advance width, so
+	 * the browser can only pad lines by whole spaces, and without
+	 * hyphenation those gaps open into rivers. Hyphens let a line break
+	 * mid-word and keep the padding small. `text-wrap: pretty` goes,
+	 * because it tunes a ragged edge and there is no longer one.
+	 */
 	.prose :global(p) {
 		margin: 0 0 24px;
-		text-wrap: pretty;
+		text-align: justify;
+		hyphens: auto;
 	}
 
 	.prose :global(h2) {
@@ -191,6 +223,8 @@ const isoDate = pubDate.toISOString().slice(0, 10);
 
 	.prose :global(li) {
 		margin: 0 0 8px;
+		text-align: justify;
+		hyphens: auto;
 	}
 
 	.prose :global(hr) {
@@ -206,8 +240,14 @@ const isoDate = pubDate.toISOString().slice(0, 10);
 
 	/* Code. */
 
+	/*
+	 * 4px of side padding rather than 6. Inline code is usually
+	 * followed straight by a comma or a full stop, and the padded
+	 * background puts a visible gap between the word and the
+	 * punctuation. 6px read as a space that is not in the source.
+	 */
 	.prose :global(code) {
-		padding: 2px 6px;
+		padding: 2px 4px;
 		border-radius: 4px;
 		background: var(--code-inline-bg);
 		font-size: 0.88em;
@@ -297,10 +337,24 @@ const isoDate = pubDate.toISOString().slice(0, 10);
 	 */
 
 	.prose :global(.post-media) {
-		margin: 40px 0;
+		margin: 48px 0;
 	}
 
-	.prose :global(.post-media video),
+	/*
+	 * The recording carries its own terminal window, with its own
+	 * rounded corners and its own surround. A site border on top of
+	 * that is a frame around a frame, so video keeps the radius and
+	 * the surface but loses the border. The diagram is flat artwork
+	 * with no chrome of its own, so it still needs one.
+	 */
+	.prose :global(.post-media video) {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 12px;
+		background: var(--code-block-bg);
+	}
+
 	.prose :global(.post-media img) {
 		display: block;
 		width: 100%;
@@ -318,10 +372,28 @@ const isoDate = pubDate.toISOString().slice(0, 10);
 		color: var(--faint);
 	}
 
+	/*
+	 * Centring the text column inside the band. This has to sit after
+	 * the element rules above: each of those sets `margin` as a
+	 * shorthand, which resets the inline margins, so the auto only
+	 * survives if it comes last.
+	 */
+	.prose :global(p),
+	.prose :global(h2),
+	.prose :global(h3),
+	.prose :global(ul),
+	.prose :global(ol),
+	.prose :global(pre),
+	.prose :global(hr),
+	.prose :global(blockquote) {
+		margin-inline: auto;
+	}
+
 	/* Tags and the way back. */
 
 	.post-foot {
-		margin: 64px 0 0;
+		max-width: 720px;
+		margin: 64px auto 0;
 		padding: 28px 0 0;
 		border-top: 1px solid var(--border-faint);
 	}
@@ -353,7 +425,8 @@ const isoDate = pubDate.toISOString().slice(0, 10);
 	}
 
 	.post-back {
-		margin: 40px 0 0;
+		max-width: 720px;
+		margin: 40px auto 0;
 		font-size: 15px;
 	}
 
@@ -369,6 +442,21 @@ const isoDate = pubDate.toISOString().slice(0, 10);
 		text-underline-offset: 4px;
 	}
 
+	/*
+	 * Justification needs slack to hide. Below roughly 60 characters a
+	 * line there are too few word spaces to absorb the padding, and in
+	 * a monospace face the gaps open to two or three character widths,
+	 * which is worse than a ragged edge. The column clears 60
+	 * characters at about a 760px viewport, so that is where justified
+	 * setting stops.
+	 */
+	@media (max-width: 760px) {
+		.prose :global(p),
+		.prose :global(li) {
+			text-align: left;
+		}
+	}
+
 	@media (max-width: 560px) {
 		.prose {
 			font-size: 16.5px;
@@ -382,6 +470,28 @@ const isoDate = pubDate.toISOString().slice(0, 10);
 		.prose :global(pre) {
 			padding: 16px;
 			font-size: 13.5px;
+		}
+
+		/*
+		 * Full bleed on phones. The band is only 335px inside the
+		 * gutters and every pixel of a terminal recording counts at
+		 * that size. Gutters are 20px at this breakpoint, so the
+		 * negative margin matches exactly and nothing overflows.
+		 */
+		.prose :global(.post-media) {
+			width: calc(100% + 40px);
+			margin-inline: -20px;
+		}
+
+		.prose :global(.post-media video),
+		.prose :global(.post-media img) {
+			border-radius: 0;
+			border-left: 0;
+			border-right: 0;
+		}
+
+		.prose :global(.post-media figcaption) {
+			padding-inline: 20px;
 		}
 	}
 </style>

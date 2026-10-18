@@ -5,7 +5,7 @@ pubDate: 2026-10-18
 tags: ["aws", "ci", "redaction", "aws-landing-zone"]
 ogImage: "/images/blog/redaction-by-tooling/og.png"
 readingTime: "6 min read"
-series: "AWS landing zone, built in public"
+series: "AWS landing zone"
 draft: false
 ---
 
@@ -18,13 +18,13 @@ That was the day I stopped treating redaction as a rule I follow and started
 treating it as a control I test.
 
 <figure class="post-media">
-  <video autoplay muted loop playsinline preload="metadata" width="1200" height="675"
+  <video autoplay muted playsinline controls preload="metadata" width="1200" height="674"
     poster="/images/blog/redaction-by-tooling/redaction-gate-poster.png"
     aria-label="Terminal: caller identity output is committed with the account redacted but a role unique ID left in. The required check blocks it by file and line, merge is disabled, and the fixed commit passes.">
     <source src="/images/blog/redaction-by-tooling/redaction-gate.webm" type="video/webm" />
     <source src="/images/blog/redaction-by-tooling/redaction-gate.mp4" type="video/mp4" />
   </video>
-  <figcaption>The redaction gate, simulated with synthetic values.</figcaption>
+  <figcaption>The redaction gate, simulated.</figcaption>
 </figure>
 
 ## Why an account ID is worth hiding at all
